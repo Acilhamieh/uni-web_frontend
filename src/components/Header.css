@@ -1,0 +1,245 @@
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    position: sticky;
+    inset: 0 0 auto 0;
+    z-index: 1000;
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.logo-name-container{
+    display: flex;
+    align-items: center;
+}
+
+.logo-container{
+  width: 50px;
+  height: 41px;
+  position: relative;
+  overflow: hidden;
+}
+
+.logo-container .website-logo{
+  position: absolute;
+  left: -10px;
+  top:-6px;
+  width: 70px;
+}
+
+
+
+.nav-auth-container {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+}
+
+.links-container {
+    display: flex;
+    list-style: none;
+    gap: 1.5rem;
+    margin: 0;
+    padding: 0;
+}
+
+.link-container a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.link-container a:hover {
+    color: #0d5c91;
+}
+
+/* Desktop Auth Styles */
+.desktop-auth {
+    display: flex;
+    gap: 1rem;
+    margin-left: 2rem;
+}
+
+.login-btn, .signup-btn {
+    padding: 0.5rem 1.5rem;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.login-btn {
+    color: #0d5c91;
+    border: 1px solid #0d5c91;
+}
+
+.login-btn:hover {
+    background-color: #e6f0f7;
+}
+
+.signup-btn {
+    background-color: #0d5c91;
+    color: white;
+    border: 1px solid #0d5c91;
+}
+
+.signup-btn:hover {
+    background-color: #0a4a75;
+    border-color: #0a4a75;
+}
+
+/* Mobile Auth Container - hidden by default */
+.mobile-auth-container {
+    display: none;
+}
+
+/* Hamburger Menu */
+.hamburger {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    z-index: 1001;
+}
+
+.hamburger span {
+    display: block;
+    width: 25px;
+    height: 2px;
+    background-color: #0d5c91;
+    margin: 5px 0;
+    transition: 0.3s;
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+    header {
+        padding: 1rem;
+    }
+
+    .nav-auth-container {
+        gap: 1rem;
+    }
+
+    /* Hide desktop auth in mobile */
+    .desktop-auth {
+        display: none;
+    }
+
+    /* Show hamburger in mobile */
+    .hamburger {
+        display: block;
+    }
+
+    /* Mobile Navigation */
+    nav {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        height: 100vh;
+        width: 100%;
+        background: white;
+        flex-direction: column;
+        padding: 80px 20px 100px;
+        transition: 0.3s ease-in-out;
+        box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+        z-index: 999;
+    }
+
+    nav.open {
+        right: 0;
+    }
+
+    .links-container {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .link-container {
+        width: 100%;
+        padding: 0.8rem 0;
+        border-bottom: 1px solid #eee;
+    }
+
+    /* Mobile Auth Buttons */
+    .mobile-auth-container {
+        display: flex;
+        position: fixed;
+        bottom: 0;
+        left: -100%;
+        width: 100%;
+        padding: 1rem;
+        background: white;
+        /* box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1); */
+        transition: 0.3s ease-in-out;
+        gap: 1rem;
+        z-index: 1000;
+    }
+
+    nav.open ~ .mobile-auth-container {
+        left: 0;
+    }
+
+    .mobile-btn {
+        flex: 1;
+        text-align: center;
+        padding: 0.8rem;
+        border-radius: 4px;
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.2s;
+    }
+
+    .mobile-btn:first-child {
+        color: #0d5c91;
+        border: 1px solid #0d5c91;
+        background: white;
+    }
+
+    .mobile-btn:last-child {
+        background: #0d5c91;
+        color: white;
+        border: 1px solid #0d5c91;
+    }
+
+    /* Hamburger Animation */
+    .menu-open .hamburger span:first-child {
+        transform: rotate(45deg) translate(5px, 5px);
+    }
+
+    .menu-open .hamburger span:nth-child(2) {
+        opacity: 0;
+    }
+
+    .menu-open .hamburger span:last-child {
+        transform: rotate(-45deg) translate(7px, -7px);
+    }
+
+    /* Prevent scrolling when menu is open */
+    .menu-open {
+        position: fixed;
+        width: 100%;
+    }
+
+    /* Add overlay when menu is open */
+    .menu-open::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 998;
+    }
+}

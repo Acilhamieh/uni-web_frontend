@@ -1,0 +1,112 @@
+:root{
+  --main-color1:#5AC2F1;
+  --main-color2:#0D5C91;
+  --main-color3:#3CC6AC;
+  --main-color4:#EF3E3E;
+  --main-color5:#FFC533;
+  --main-color6:#FFFFFF;
+  --main-color7:#7d7d7d;
+  --main-color8:#001c2f;
+}
+
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+}
+
+body, html {
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/*Mobile devices*/
+@media screen and (max-width: 768px) {
+
+  html{
+    font-size:12px;
+  }
+
+  /* Hide scrollbar for mobile devices */
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
+  ::-webkit-scrollbar-track {
+    display: none;
+  }
+  /* Hide the draggable part of the scrollbar */
+  ::-webkit-scrollbar-thumb {
+    display: none;
+  }
+
+}
+
+/*desktop devices*/
+
+@media screen and (min-width: 769px){
+  html{
+    font-size:14px;
+  }
+
+  /* Show scrollbar for desktop devices */
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #0d5c91f1;
+    border-radius: 5px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #0d5c91;
+  }
+
+  ::-webkit-scrollbar-corner {
+    background: #f1f1f1;
+  }
+
+  ::-webkit-scrollbar-button {
+    display: none; /* Hide the arrows */
+  }
+
+}
+
+.small-text{
+  font-size: 1rem;
+}
+
+.meduim-text{
+  font-size: 1.16rem;
+}
+
+.small-heading{
+  font-size: 1.5rem;
+}
+
+.meduim-heading{
+  font-size: 1.75rem;
+}
+
+.large-heading{
+  font-size:2rem;
+}
+
+.txt-bl{
+  color:var(--main-color2);
+}
