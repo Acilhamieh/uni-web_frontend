@@ -128,9 +128,7 @@
 }
 
 .mission-statement {
-    text-align: center;
-    max-width: 800px;
-    margin: 0 auto;
+    margin-top: 60px;
     padding: 40px;
     background: white;
     border-radius: 20px;
@@ -138,15 +136,60 @@
 }
 
 .mission-statement h3 {
-    color: var(--main-color8);
     font-size: 2rem;
-    margin-bottom: 20px;
+    color: var(--main-color8);
+    text-align: center;
+    margin-bottom: 40px;
+    position: relative;
 }
 
-.mission-statement p {
+.mission-statement h3::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: var(--main-color2);
+    border-radius: 2px;
+}
+
+.vision-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 24px;
+    padding: 20px 0;
+}
+
+.vision-card {
+    padding: 24px;
+    background: #f8f9fa;
+    border-radius: 16px;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.vision-card:hover {
+    transform: translateY(-5px);
+}
+
+.vision-icon {
+    font-size: 2rem;
+    color: var(--main-color2);
+    margin-bottom: 16px;
+}
+
+.vision-card h4 {
+    color: var(--main-color8);
+    font-size: 1.2rem;
+    margin-bottom: 12px;
+}
+
+.vision-card p {
     color: var(--main-color7);
-    line-height: 1.7;
-    font-size: 1.1rem;
+    font-size: 0.95rem;
+    line-height: 1.6;
 }
 
 @media screen and (max-width: 968px) {
@@ -173,7 +216,7 @@
         width: 120px;
         height: 120px;
     }
-} */
+}
 
 .about-us-container{
     padding: 50px 100px;
@@ -202,4 +245,4 @@
 .team-header{
     text-align: center;
     
-}
+} */
