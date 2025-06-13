@@ -4,7 +4,6 @@ import TeamCard from './TeamCard';
 import { FaGithub, FaLinkedin } from 'react-icons/fa';
 import { MdEmail } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
-import { FaBookReader, FaClipboardList, FaBriefcase, FaLightbulb } from 'react-icons/fa';
 import './AboutUs.css';
 
 const teamMembers = [
@@ -34,24 +33,24 @@ export default function AboutUs(props) {
     const navigate = useNavigate();
 
     return (
-        <div className="about-us-container">
-            <div className="about-header">
+        <section className="about-us-container">
+            <section className="about-header about-content">
                 <h2 className='meduim-heading'>About <span className="highlight-bl">Daliluka</span></h2>
                 <p className="about-story meduim-text">
                     Born from the shared struggles of two Business Computing students,
-                    Dalilak emerged as a solution to the challenges we faced in finding
+                    Daliluka emerged as a solution to the challenges we faced in finding
                     university resources. Our mission is simple, to create the platform
                     we wished we had during our academic journey.
                 </p>
 
                 {!props.details && (<button className="btn-bl" onClick={() => navigate('/aboutus')}>More About Daliluka →</button>)}
-            </div>
+            </section>
 
             {props.details && (
                 <>
-                    <section className='team-container'>
+                    <section className='team-container about-content'>
                         <div className='team-header'>
-                            <h2 className='meduim-heading'>Meet The Team Behind <span className="highlight-bl">Dalilak</span></h2>
+                            <h2 className='meduim-heading'>Meet The Team Behind <span className="highlight-bl">Daliluka</span></h2>
                             <p className="team-intro meduim-text">
                                 We're two passionate Business Computing students who transformed our academic challenges
                                 into a solution that helps fellow students navigate their university journey.
@@ -63,32 +62,16 @@ export default function AboutUs(props) {
                             ))}
                         </div>
                     </section>
-                    <div className="mission-statement">
-                        <h3>Our Vision</h3>
-                        <div className="vision-cards">
-                            <div className="vision-card">
-                                <FaBookReader className="vision-icon" />
-                                <h4>Academic Resources Hub</h4>
-                                <p>Centralizing past exams and study materials in one accessible place</p>
-                            </div>
-                            <div className="vision-card">
-                                <FaClipboardList className="vision-icon" />
-                                <h4>Course Information</h4>
-                                <p>Comprehensive details about courses and study materials</p>
-                            </div>
-                            <div className="vision-card">
-                                <FaBriefcase className="vision-icon" />
-                                <h4>Career Opportunities</h4>
-                                <p>Connect with internship and job opportunities</p>
-                            </div>
-                            <div className="vision-card">
-                                <FaLightbulb className="vision-icon" />
-                                <h4>Simplified Access</h4>
-                                <p>Making university information easily accessible</p>
-                            </div>
+                    <section className="mission-container about-content">
+                        <h2 className='meduim-heading'><span className="highlight-bl">Daliluka</span> Vision</h2>
+                        <div className="mission-statement meduim-text">
+                            <span>Building a centralized hub for academic resources and past exam sessions</span>
+                            <span>Providing comprehensive course information and study materials</span>
+                            <span>Connecting students with internship opportunities</span>
+                            <span>Making university life easier through accessible information</span>
                         </div>
-                    </div>
+                    </section>
                 </>)}
-        </div>
+        </section>
     );
 }
