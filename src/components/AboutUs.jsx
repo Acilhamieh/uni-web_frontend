@@ -4,6 +4,7 @@ import TeamCard from './TeamCard';
 import { FaGithub, FaLinkedin } from 'react-icons/fa';
 import { MdEmail } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
+import { FaBookReader, FaClipboardList, FaBriefcase, FaLightbulb } from 'react-icons/fa';
 import './AboutUs.css';
 
 const teamMembers = [
@@ -64,12 +65,28 @@ export default function AboutUs(props) {
                     </section>
                     <div className="mission-statement">
                         <h3>Our Vision</h3>
-                        <p>
-                            <span>Building a centralized hub for academic resources and past exam sessions</span>
-                            <span>Providing comprehensive course information and study materials</span>
-                            <span>Connecting students with internship opportunities</span>
-                            <span>Making university life easier through accessible information</span>
-                        </p>
+                        <div className="vision-cards">
+                            <div className="vision-card">
+                                <FaBookReader className="vision-icon" />
+                                <h4>Academic Resources Hub</h4>
+                                <p>Centralizing past exams and study materials in one accessible place</p>
+                            </div>
+                            <div className="vision-card">
+                                <FaClipboardList className="vision-icon" />
+                                <h4>Course Information</h4>
+                                <p>Comprehensive details about courses and study materials</p>
+                            </div>
+                            <div className="vision-card">
+                                <FaBriefcase className="vision-icon" />
+                                <h4>Career Opportunities</h4>
+                                <p>Connect with internship and job opportunities</p>
+                            </div>
+                            <div className="vision-card">
+                                <FaLightbulb className="vision-icon" />
+                                <h4>Simplified Access</h4>
+                                <p>Making university information easily accessible</p>
+                            </div>
+                        </div>
                     </div>
                 </>)}
         </div>
