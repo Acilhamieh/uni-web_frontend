@@ -30,7 +30,7 @@ export default function Header() {
                         className="website-logo"
                     />
                 </div>
-                <h3 className='meduim-heading website-name'>Daliluka</h3>
+                <h3 className='small-heading website-name'>Daliluka</h3>
             </div>
             
             <div className="nav-auth-container">
@@ -43,7 +43,7 @@ export default function Header() {
                             <Link to="/services" onClick={() => setIsMenuOpen(false)}>Services</Link>
                         </li>
                         <li className='link-container'>
-                            <Link to="/about" onClick={() => setIsMenuOpen(false)}>About us</Link>
+                            <Link to="/aboutus" onClick={() => setIsMenuOpen(false)}>About us</Link>
                         </li>
                         <li className='link-container'>
                             <Link to="/contact" onClick={() => setIsMenuOpen(false)}>Contact us</Link>

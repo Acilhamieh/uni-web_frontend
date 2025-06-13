@@ -145,9 +145,9 @@ nav {
     nav {
         position: fixed;
         top: 0;
-        right: -100%;
+        right: -80%; /* Changed from -100% */
         height: 100vh;
-        width: 100%;
+        width: 80%;  /* Changed from 100% */
         background: white;
         flex-direction: column;
         padding: 80px 20px 100px;
@@ -176,8 +176,9 @@ nav {
         display: flex;
         position: fixed;
         bottom: 0;
-        left: -100%;
-        width: 100%;
+        right: -80%; /* Changed from left: -100% */
+        left: auto;  /* Added to override left property */
+        width: 80%;  /* Changed from 100% */
         padding: 1rem;
         background: white;
         /* box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1); */
@@ -187,7 +188,8 @@ nav {
     }
 
     nav.open ~ .mobile-auth-container {
-        left: 0;
+        right: 0;    /* Changed from left: 0 */
+        left: auto;  /* Added to ensure right alignment */
     }
 
     .mobile-btn {
@@ -239,7 +241,7 @@ nav {
         left: 0;
         right: 0;
         bottom: 0;
-        background: rgba(0, 0, 0, 0.5);
+        background: rgba(0, 0, 0, 0.427); /* Lightened overlay */
         z-index: 998;
     }
 }
