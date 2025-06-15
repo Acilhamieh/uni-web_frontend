@@ -33,7 +33,7 @@ export default function AboutUs({home}) {
     const navigate = useNavigate();
 
     return (
-        <section className="about-us-container">
+        <section className={`about-us-container ${home && 'background-bl'}`}>
             <section className="about-header about-content">
                 <h2 className='section-title'>About <span className="highlight-bl">Daliluka</span></h2>
                 <p className="about-story meduim-text">
@@ -43,10 +43,10 @@ export default function AboutUs({home}) {
                     we wished we had during our academic journey.
                 </p>
 
-                {!home && (<button className="btn-bl" onClick={() => navigate('/aboutus')}>More About Daliluka →</button>)}
+                {home && (<button className="btn-bl" onClick={() => navigate('/aboutus')}>More About Daliluka →</button>)}
             </section>
 
-            {home && (
+            {!home && (
                 <>
                     <section className='team-container about-content'>
                         <div className='team-header'>

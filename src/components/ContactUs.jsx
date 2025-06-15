@@ -153,7 +153,7 @@ const ContactUs = () => {
             <label>Message</label>
             {errors.message && <span className="error">{errors.message}</span>}
           </div>
-          <button type="submit">Send Message</button>
+          <button type="submit" className='btn-bl'>Send Message</button>
         </form>
       </div>
     </div>

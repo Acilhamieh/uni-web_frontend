@@ -11,7 +11,7 @@ export default function Home() {
             <Header />
             <HeroSection />
             <Services home = {true}/>
-            <AboutUs home = {false} />  
+            <AboutUs home = {true} />  
             <Footer />  
         </div>
     );

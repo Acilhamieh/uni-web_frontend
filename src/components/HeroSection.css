@@ -2,9 +2,8 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 80px 80px;
+    padding: 32px 80px;
     background: linear-gradient(135deg, #f8f9fa 0%, #e3f2fd 100%);
-    min-height: 90vh;
     position: relative;
     overflow: hidden;
 }
@@ -125,7 +124,7 @@
 }
 
 .hero-content h1 {
-    font-size: 4rem;
+    font-size: 3.5rem;
     line-height: 1.2;
     margin-bottom: 1.5rem;
     color: var(--main-color8);
@@ -142,14 +141,6 @@
     color: var(--main-color1);
     font-weight: 700;
     text-transform: uppercase;
-}
-
-.hero-content p {
-    font-size: 1.2rem;
-    line-height: 1.6;
-    color: var(--main-color7);
-    margin-bottom: 2rem;
-    max-width: 540px;
 }
 
 

@@ -45,7 +45,7 @@
 /* for buttons and labels */
 .meduim-text{
   line-height: 1.8rem;
-  font-size: 1.16rem;
+  font-size: 1.1rem;
   font-weight: 400;
   color: var(--main-color7);
 }
@@ -76,7 +76,7 @@
 
 /* section title */
 .section-title {
-  font-size: 2.5rem;
+  font-size: 2rem;
   color: var(--main-color8);
   margin-bottom: 50px;
   text-align: center;
@@ -100,12 +100,12 @@
 }
 
 .btn-bl {
-    padding: 18px 35px;
+    padding: 15px 20px;
     font-size: 1.1rem;
     background: var(--main-color2);
     color: white;
     border: none;
-    border-radius: 12px;
+    border-radius: 9px;
     cursor: pointer;
     transition: all 0.4s ease;
     font-weight: 600;
@@ -133,6 +133,8 @@
     animation: shine 1.5s ease-out;
 }
 
+
+
 @keyframes shine {
     100% {
         transform: translateX(100%);
@@ -143,3 +145,6 @@
   color: #0D5C91;
 }
 
+.background-bl{
+  background: linear-gradient(#e3f2fd 100%);
+}

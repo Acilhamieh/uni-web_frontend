@@ -1,5 +1,6 @@
 .services-section {
-  padding: 80px 100px;
+  padding: 60px 80px;
+  height: 90vh;
   position: relative;
   overflow: hidden;
 } 
@@ -21,7 +22,7 @@
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
-  border: 1px solid rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.139);
 }
 
 .service-card:hover {
@@ -65,6 +66,7 @@
 @media (max-width: 768px) {
   .services-section {
     padding: 40px 20px;
+    height: fit-content;
   }
 
   .section-title {
