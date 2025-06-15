@@ -46,7 +46,7 @@ export default function Header() {
                             <Link to="/aboutus" onClick={() => setIsMenuOpen(false)}>About us</Link>
                         </li>
                         <li className='link-container'>
-                            <Link to="/contact" onClick={() => setIsMenuOpen(false)}>Contact us</Link>
+                            <Link to="/contactus" onClick={() => setIsMenuOpen(false)}>Contact us</Link>
                         </li>
                         <li className='link-container'>
                             <Link to="/news" onClick={() => setIsMenuOpen(false)}>News & Events</Link>

@@ -6,7 +6,7 @@ export default function AboutUsPg() {
     return (
         <div className="about-us-page">
             <Header />
-            <AboutUs details={true} />
+            <AboutUs home={true} />
             <Footer />
         </div>
     )

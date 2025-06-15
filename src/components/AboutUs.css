@@ -1,4 +1,4 @@
-.about-us-container{
+.about-us-container {
     padding: 0 100px;
     display: flex;
     flex-direction: column;
@@ -7,7 +7,6 @@
 
 .about-content {
     width: 100%;
-    max-width: 1000px;
     padding: 40px 0;
 }
 
@@ -16,19 +15,23 @@
     margin-bottom: 30px;
 }
 
-.team-container , .mission-container{
+
+
+.team-container,
+.mission-container {
     margin-top: 30px;
     border-top: 2px solid #f0f2f5;
 }
 
-.team-grid{
+.team-grid {
     display: flex;
     flex-wrap: wrap;
-    gap:50px;
+    gap: 50px;
     padding: 50px 0;
 }
 
-.team-header , .about-header{
+.team-header,
+.about-header {
     text-align: center;
 }
 
@@ -53,5 +56,9 @@
 @media (max-width: 768px) {
     .about-content {
         padding: 30px 20px;
+    }
+
+    .about-us-container {
+        padding: 0 10px;
     }
 }

@@ -29,13 +29,13 @@ const teamMembers = [
     }
 ];
 
-export default function AboutUs(props) {
+export default function AboutUs({home}) {
     const navigate = useNavigate();
 
     return (
         <section className="about-us-container">
             <section className="about-header about-content">
-                <h2 className='meduim-heading'>About <span className="highlight-bl">Daliluka</span></h2>
+                <h2 className='section-title'>About <span className="highlight-bl">Daliluka</span></h2>
                 <p className="about-story meduim-text">
                     Born from the shared struggles of two Business Computing students,
                     Daliluka emerged as a solution to the challenges we faced in finding
@@ -43,15 +43,15 @@ export default function AboutUs(props) {
                     we wished we had during our academic journey.
                 </p>
 
-                {!props.details && (<button className="btn-bl" onClick={() => navigate('/aboutus')}>More About Daliluka →</button>)}
+                {!home && (<button className="btn-bl" onClick={() => navigate('/aboutus')}>More About Daliluka →</button>)}
             </section>
 
-            {props.details && (
+            {home && (
                 <>
                     <section className='team-container about-content'>
                         <div className='team-header'>
                             <h2 className='meduim-heading'>Meet The Team Behind <span className="highlight-bl">Daliluka</span></h2>
-                            <p className="team-intro meduim-text">
+                            <p className="team-intro small-text">
                                 We're two passionate Business Computing students who transformed our academic challenges
                                 into a solution that helps fellow students navigate their university journey.
                             </p>
@@ -64,7 +64,7 @@ export default function AboutUs(props) {
                     </section>
                     <section className="mission-container about-content">
                         <h2 className='meduim-heading'><span className="highlight-bl">Daliluka</span> Vision</h2>
-                        <div className="mission-statement meduim-text">
+                        <div className="mission-statement small-text">
                             <span>Building a centralized hub for academic resources and past exam sessions</span>
                             <span>Providing comprehensive course information and study materials</span>
                             <span>Connecting students with internship opportunities</span>
