@@ -1,6 +1,7 @@
 import './Header.css';
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import Logo from './Logo';
 
 export default function Header() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -23,13 +24,7 @@ export default function Header() {
     return (
         <header className={`${isScrolled ? 'scrolled' : ''} ${isMenuOpen ? 'menu-open' : ''}`}>
             <div className="logo-name-container">
-                <div className="logo-container">
-                    <img
-                        src="src\assets\logo-without-name.png"
-                        alt="website logo"
-                        className="website-logo"
-                    />
-                </div>
+                < Logo/>
                 <h3 className='small-heading website-name'>Daliluka</h3>
             </div>
             

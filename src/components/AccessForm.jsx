@@ -2,20 +2,14 @@ import './AccessForm.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRightToBracket } from '@fortawesome/free-solid-svg-icons';
 import FormHandler from './FormHandler';
+import Logo from './Logo';
 
 export default function AccessForm(props) {
     return (
         <div className="access-form-container">
         <div className="container">
             <div className="left-container">
-                <div className="logo-container">
-                    <img
-                        src="src\assets\logo-without-name.png"
-                        alt="website logo"
-                        className="website-logo"
-                    />
-                </div>
-                
+                <Logo />
                 <div className='left-container-body'>
                     <span className="form-title">
                         {props.register?"Access account":"Create account"}

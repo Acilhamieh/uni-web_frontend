@@ -25,7 +25,7 @@ const teamMembers = [
             src: "src/assets/profile-photo.jpg",
             alt: "Acil - Backend Developer"
         },
-        skills: ["Node.js", "MongoDB", "API Design", "Security"]
+        skills: ["Node.js","Express.js" , "SupaBase", "API Design"]
     }
 ];
 

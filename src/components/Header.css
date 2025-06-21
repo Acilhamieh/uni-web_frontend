@@ -2,9 +2,9 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 40px;
+    padding: 15px 40px;
     background: white;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.199);
     position: sticky;
     top:0;
     z-index: 1000;
@@ -17,29 +17,9 @@ header {
     
 }
 
-.logo-container{
-  display: flex;
-  align-items: center;
-  margin-top: -9px;
-  width: 50px;
-  height: 41px;
-  position: relative;
-  overflow: hidden;
+.logo-name-container .logo-container{
+    margin-top: -9px;
 }
-
-.logo-container .website-logo{
-  position: absolute;
-  left: -10px;
-  top:-6px;
-  width: 70px;
-}
-
-/* Add these styles to fix the logo responsiveness */
-.logo-container {
-  flex-shrink: 0; /* Prevents logo from shrinking */ /* Minimum width for logo container */
-}
-
-
 
 .nav-auth-container {
     display: flex;
