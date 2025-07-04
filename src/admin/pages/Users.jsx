@@ -53,7 +53,7 @@ export default function Users() {
     { field: 'id', headerName: 'ID', width: 90, sortable: true },
     {
       field: 'name',
-      headerName: 'Name',
+      headerName: 'Full Name',
       width: 250,
       sortable: true,
       valueGetter: (row) => {
