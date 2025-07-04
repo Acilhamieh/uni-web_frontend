@@ -5,9 +5,7 @@ import Footer from "../components/Footer";
 export default function AboutUsPg() {
     return (
         <div className="about-us-page">
-            <Header />
             <AboutUs home={false} />
-            <Footer />
         </div>
     )
 }

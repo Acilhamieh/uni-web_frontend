@@ -1,0 +1,258 @@
+a{
+  color: var(--main-color2);
+}
+
+/* Loading button styles */
+.button-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.spinner {
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: white;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.form-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+/* 1-container */
+.container {
+  background-color: var(--main-color6);
+  overflow: hidden; /* Hide scrollbars for the main container */
+  display: flex;
+  justify-content: space-between;
+
+}
+
+/* small screen */
+@media screen and (max-width:960px) {
+
+  .container {
+    flex-direction: column-reverse;
+    height: 100vh;
+    overflow: scroll;
+  }
+
+  .left-container{
+    height: 60vh;
+  }
+
+  .logo-container{
+    display: none;
+  }
+
+  .right-container {
+    border-radius: 0 0 50% 50% ;
+    height: 250px;
+  }
+}
+
+/* large screen */
+@media screen and (min-width:961px) {
+  .access-form-container {
+    height: 100vh;
+    background-image: linear-gradient(to bottom, var(--main-color2), var(--main-color1));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .container {
+    width: 80vw;
+    height: 90vh;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.25);
+    border-radius: 20px;
+  }
+
+  .left-container {
+    width: 45%;
+  }
+
+  .left-container-body{
+    overflow-y: scroll;
+  }
+
+  .right-container {
+    width: 55%;
+    border-radius: 50% 0 0 50%;
+    margin-right: -20px;
+  }
+
+}
+
+/* 2-left container */
+.left-container{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  color: var(--main-color8);
+}
+
+.left-container-body{
+  padding-left: 50px;
+  padding-right: 50px;
+  margin-bottom: 32px; /* Add fixed gap below left-container-body */
+  overflow-y: auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;  /* IE 10+ */
+}
+.left-container-body::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+.form-title{
+  display: inline-block;
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 80px;
+}
+
+.access-form{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.input-container{
+  display: flex;
+  flex-direction: column;
+  gap:1px;
+}
+
+.input-filled{
+  padding:5px 7px;
+  border-radius: 5px;
+  border: 1px solid var(--main-color7);
+  color: var(--main-color8);
+  font-size: 0.8rem;
+}
+
+.input-filled:focus{
+  border: 2px solid var(--main-color2);
+  outline: none;
+}
+
+.form-btn{
+  padding: 7px;
+  border-radius: 5px;
+  border: none;
+  font-size: 1rem;
+  background-color: var(--main-color2);
+  color: var(--main-color6);
+  cursor: pointer;
+  transition: .5s;
+}
+
+.form-btn:hover{
+  background-color: var(--main-color1);
+  letter-spacing: 1px;
+  background-color: var(--main-color1);
+}
+
+.bottom-text{
+  font-size: 0.9rem;
+  display: inline-block;
+  padding:10px 50px 20px 50px;
+  color: var(--main-color7);
+}
+
+
+/* 3-right container */
+.right-container{
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--main-color2);
+  transition: .5s;
+}
+
+.greet-container{
+  margin-bottom: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  color: var(--main-color6);
+}
+
+.greet-container .greet-title{
+  font-size: 3rem;
+  font-weight: 700;
+  line-height: 80px;
+}
+
+.greet-container .greet-subtitle{
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin-top: 10px;
+}
+/* 4-styling the checkbox */
+/* Hide the default checkbox */
+.custom-checkbox{
+  display: flex;
+  flex-direction: column;
+}
+
+.custom-checkbox input[type="checkbox"] {
+  display: none;
+}
+
+/* Custom box */
+.custom-checkbox .checkmark {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #ccc;
+  display: inline-block;
+  margin-right: 10px;
+  border-radius: 4px;
+  position: relative;
+  transition: background-color 0.3s ease;
+}
+
+/* When the checkbox is checked */
+.custom-checkbox input[type="checkbox"]:checked + .checkmark {
+  background-color: var(--main-color2); /* or any color */
+  border-color: var(--main-color2);
+}
+
+/* Optional: Add a checkmark */
+.custom-checkbox input[type="checkbox"]:checked + .checkmark::after {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 1px;
+  width: 4px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+/* error case */
+.error-input{
+  border: 1.5px solid var(--main-color4);
+}
+
+.error-message{
+  padding-left: 5px;
+  color: var(--main-color4);
+  font-size: 0.75rem;
+}

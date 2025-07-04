@@ -5,9 +5,7 @@ import Footer from '../components/Footer';
 export default function ContactUsPg(){
     return (
         <div className="contact-us-page">
-            <Header />
             <ContactUs />
-            <Footer />
         </div>
     );
 }

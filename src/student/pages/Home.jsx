@@ -8,11 +8,9 @@ import Footer from '../components/Footer';
 export default function Home() {
     return (
         <div className="home-page">
-            <Header />
             <HeroSection />
             <Services home = {true}/>
             <AboutUs home = {true} />  
-            <Footer />  
         </div>
     );
 }
