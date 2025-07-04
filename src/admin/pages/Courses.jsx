@@ -65,7 +65,7 @@ const FORM_FIELDS = [
     rows: 4
   },
   {
-    name: 'prerequisites',
+    name: 'prequisites',
     label: 'Prerequisites',
     type: 'text',
     required: false,
@@ -73,7 +73,7 @@ const FORM_FIELDS = [
     rows: 2
   },
   {
-    name: 'objectives',
+    name: 'objective',
     label: 'Course Objectives',
     type: 'text',
     required: true,

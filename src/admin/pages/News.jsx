@@ -41,14 +41,6 @@ const FORM_FIELDS = [
     multiline: true,
     rows: 4
   },
-  {
-    name: 'summary',
-    label: 'Summary',
-    type: 'text',
-    required: true,
-    multiline: true,
-    rows: 2,
-  },
   { name: 'image', label: 'Image URL', type: 'text', required: false },
 
 ];
