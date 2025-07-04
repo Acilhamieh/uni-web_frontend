@@ -237,6 +237,15 @@ export default function Sessions() {
   } = useFormHandling({
     initialData: {},
     onSubmit: (data, mode) => {
+      // Validate PDF URLs
+      if (data.question_pdf_url && !data.question_pdf_url.trim().toLowerCase().endsWith('.pdf')) {
+        Toast.error('The Question Paper URL must end with .pdf');
+        return;
+      }
+      if (data.solution_pdf_url && data.solution_pdf_url.trim() !== '' && !data.solution_pdf_url.trim().toLowerCase().endsWith('.pdf')) {
+        Toast.error('The Solution PDF URL must end with .pdf');
+        return;
+      }
       // Only send the courseCode to the backend, not the full course object
       const submitData = {
         ...data,
@@ -368,4 +377,4 @@ export default function Sessions() {
       </FormDialog>
     </Box>
   );
-} 
+}

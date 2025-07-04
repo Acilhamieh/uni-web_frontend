@@ -41,8 +41,7 @@ const FORM_FIELDS = [
     multiline: true,
     rows: 4
   },
-  { name: 'image', label: 'Image URL', type: 'text', required: false },
-
+  { name: 'image', label: 'Image', type: 'file', required: false, accept: '.jpeg,.jpg,.png' },
 ];
 
 export default function News() {
@@ -136,21 +135,37 @@ export default function News() {
     resetForm
   } = useFormHandling({
     initialData: {},
-    onSubmit: (data, mode) => {
-      // Add a computed 'name' field for display purposes
-      const processedData = {
-        ...data,
-        created_by: 1,
-      };
-      
-      // Make sure to include the id when updating
-      if (mode === 'edit' && data.id) {
-        processedData.id = data.id;
+    onSubmit: async (data, mode) => {
+      const processedData = { ...data, created_by: 1 };
+      // Handle file upload
+      if (data.image && data.image instanceof File) {
+        const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+        if (!allowedTypes.includes(data.image.type)) {
+          alert('Only .jpeg, .jpg, and .png files are allowed.');
+          return;
+        }
+        const formDataObj = new FormData();
+        Object.entries(processedData).forEach(([key, value]) => {
+          if (key === 'image') {
+            formDataObj.append('image', value);
+          } else {
+            formDataObj.append(key, value);
+          }
+        });
+        if (mode === 'edit' && data.id) {
+          formDataObj.append('id', data.id);
+        }
+        return mode === 'edit'
+          ? handleUpdate(formDataObj, newsUrl, true)
+          : handleCreate(formDataObj, newsUrl, true);
+      } else {
+        if (mode === 'edit' && data.id) {
+          processedData.id = data.id;
+        }
+        return mode === 'edit'
+          ? handleUpdate(processedData, newsUrl)
+          : handleCreate(processedData, newsUrl);
       }
-      
-      return mode === 'edit' ? 
-        handleUpdate(processedData, newsUrl) : 
-        handleCreate(processedData, newsUrl);
     }
   });
 
@@ -271,4 +286,4 @@ export default function News() {
       </FormDialog>
     </Box>
   );
-} 
+}

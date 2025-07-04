@@ -3,6 +3,10 @@ import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
+const registrationApiUrl = `${backendUrl}/api/auth/register`;
+
 export default function FormHandler(props) {
 
     //data for the form
@@ -169,15 +173,25 @@ export default function FormHandler(props) {
             setIsLoading(true);
             try {
 
-                console.log("Submitting data:", JSON.stringify(data));
-                const response = await fetch("http://localhost:4000/api/auth/register", {
+                const submittedData = {
+                    first_name : data.firstName,
+                    last_name : data.lastName,
+                    email : data.email,
+                    password : data.password
+                }
+
+                console.log("Submitting data:", JSON.stringify(submittedData));
+
+                const response = await fetch(registrationApiUrl, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(data),
+                    body: JSON.stringify(submittedData),
                 });
 
                 const result = await response.json();
 
+                console.log("Response from server :", result);
+                
                 if (response.ok) {
                     console.log("Registration successful!");
 

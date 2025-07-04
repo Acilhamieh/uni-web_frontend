@@ -11,6 +11,7 @@ import Signup from './student/pages/Signup';
 import AboutUsPg from './student/pages/AboutUsPg';
 import ServicesPg from './student/pages/ServicesPg';
 import ContactUsPg from './student/pages/ContactUsPg';
+import News from './student/pages/News';
 
 // Admin
 import AdminApp from './admin/App';
@@ -53,6 +54,7 @@ export default function App() {
         <Route path="/aboutus" element={<AboutUsPg />} />
         <Route path="/services" element={<ServicesPg />} />
         <Route path="/contactus" element={<ContactUsPg />} />
+        <Route path="/news" element={<News/>}/>
           </Route>
 
           {/* Auth Routes */}
