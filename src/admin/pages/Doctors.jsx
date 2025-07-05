@@ -106,6 +106,8 @@ export default function Doctors() {
         processedData.id = data.id;
       }
 
+      console.log("data after edit or create :",processedData);
+      
       return mode === 'edit' ?
         handleUpdate(processedData, doctorsUrl) :
         handleCreate(processedData, doctorsUrl);

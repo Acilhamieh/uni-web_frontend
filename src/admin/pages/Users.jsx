@@ -37,7 +37,7 @@ export default function Users() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [searchText, setSearchText] = useState('');
-  const [sortBy, setSortBy] = useState('name');
+  const [sortBy, setSortBy] = useState('id');
   const [sortDirection, setSortDirection] = useState('asc');
 
   const {
@@ -126,7 +126,7 @@ export default function Users() {
 
       // Remove confirmPassword before sending to API
       const { confirmPassword, ...submitData } = data;
-      return mode === 'edit' ? handleUpdate(submitData) : handleCreate(submitData);
+      return mode === 'edit' ? handleUpdate(submitData , usersUrl) : handleCreate(submitData , usersUrl);
     }
   });
 

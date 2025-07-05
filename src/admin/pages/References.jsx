@@ -59,8 +59,8 @@ export default function References() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [searchText, setSearchText] = useState('');
-  const [sortBy, setSortBy] = useState('id');
-  const [sortDirection, setSortDirection] = useState('asc');
+  const [sortBy, setSortBy] = useState('year');
+  const [sortDirection, setSortDirection] = useState('desc');
   const [courses, setCourses] = useState([]);
 
   const {
@@ -166,7 +166,17 @@ export default function References() {
     resetForm
   } = useFormHandling({
     initialData: {},
-    onSubmit: (data, mode) => mode === 'edit' ? handleUpdate(data, referencesUrl) : handleCreate(data, referencesUrl)
+  onSubmit: (data, mode) => {
+    // Ensure we never send course_name, only course_id, and never send id in update
+    const cleanedData = { ...data };
+    
+    if ('course_name' in cleanedData) delete cleanedData.course_name;
+    //if (mode === 'edit' && 'id' in cleanedData) delete cleanedData.id;
+
+    console.log("data after edit or create :", cleanedData);
+
+    return mode === 'edit' ? handleUpdate(cleanedData, referencesUrl) : handleCreate(cleanedData, referencesUrl);
+  }
   });
 
   // Filter and sort data
