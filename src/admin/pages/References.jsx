@@ -258,7 +258,7 @@ export default function References() {
       </Box>
       <DataTable
         title="References"
-        rows={sortedData}
+        rows={sortedData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)} //pagination
         columns={COLUMNS}
         loading={loading || coursesLoading}
         page={page}

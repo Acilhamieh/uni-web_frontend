@@ -25,7 +25,7 @@ const FORM_FIELDS = [
   { name: 'hours_td', label: 'TD hours', type: 'number', required: true },
   { name: 'hours_tp', label: 'TP hours', type: 'number', required: true },
   {
-    name: 'instructor_name',
+    name: 'instructor_id',
     label: 'Instructor',
     type: 'select',
     required: true,
@@ -65,7 +65,7 @@ const FORM_FIELDS = [
     rows: 4
   },
   {
-    name: 'prequisites',
+    name: 'prequisties',
     label: 'Prerequisites',
     type: 'text',
     required: false,
@@ -107,7 +107,7 @@ export default function Courses() {
 
   useEffect(() => {
     if (doctorsData) {
-      const instructorField = FORM_FIELDS.find(field => field.name === 'instructor_name');
+      const instructorField = FORM_FIELDS.find(field => field.name === 'instructor_id');
       if (instructorField) {
         instructorField.options = doctorsData.map(doctor => ({
           value: doctor.id,
@@ -126,7 +126,16 @@ export default function Courses() {
     { field: 'hours_course', headerName: 'Course Hours', width: 100, sortable: true, type: 'number' },
     { field: 'hours_td', headerName: 'TD Hours', width: 100, sortable: true, type: 'number' },
     { field: 'hours_tp', headerName: 'TP Hours', width: 100, sortable: true, type: 'number' },
-    { field: 'instructor_name', headerName: 'Instructor', width: 180, sortable: true },
+    { 
+      field: 'instructor_id', 
+      headerName: 'Instructor', 
+      width: 180, 
+      sortable: true,
+      renderCell: (row) => {
+        const doctor = doctors.find(d => d.id === row.instructor_id);
+        return doctor ? doctor.full_name : '';
+      }
+    },
     { field: 'classroom_url', headerName: 'Classroom', width: 180, sortable: true },
     {
       field: 'level',
@@ -201,17 +210,17 @@ export default function Courses() {
     initialData: {},
 
     onSubmit: (data, mode) => {
-      // Add a computed 'name' field for display purposes
+      // Always send instructor_id, never instructor_name
       const processedData = {
         ...data,
         created_by: 1,
       };
-      
+      // Remove instructor_name if present
+      if ('instructor_name' in processedData) delete processedData.instructor_name;
       // Make sure to include the id when updating
       if (mode === 'edit' && data.id) {
         processedData.id = data.id;
       }
-      
       return mode === 'edit' ? 
         handleUpdate(processedData, coursesUrl) : 
         handleCreate(processedData, coursesUrl);
@@ -297,7 +306,7 @@ export default function Courses() {
       </Box>
       <DataTable
         title="Courses"
-        rows={sortedData}
+        rows={sortedData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)}
         columns={COLUMNS}
         loading={loading || doctorsLoading}
         page={page}
@@ -326,6 +335,7 @@ export default function Courses() {
             {...field}
             value={formData[field.name]}
             onChange={handleChange}
+            options={field.name === 'instructor_id' ? doctors.map(d => ({ value: d.id, label: d.full_name })) : field.options}
           />
         ))}
       </FormDialog>

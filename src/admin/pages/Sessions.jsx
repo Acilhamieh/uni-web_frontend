@@ -342,7 +342,7 @@ export default function Sessions() {
       </Box>
       <DataTable
         title="Past Sessions"
-        rows={sortedData}
+        rows={sortedData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)} //pagination
         columns={COLUMNS}
         loading={loading || coursesLoading}
         page={page}

@@ -52,13 +52,13 @@ export default function Users() {
   const COLUMNS = [
     { field: 'id', headerName: 'ID', width: 90, sortable: true },
     {
-      field: 'name',
+      field: 'full_name',
       headerName: 'Full Name',
       width: 250,
       sortable: true,
-      valueGetter: (row) => {
+      renderCell: (row) => {
         const firstName = row.first_name || '';
-        const lastName = row.last_name;
+        const lastName = row.last_name || '';
         return `${firstName} ${lastName}`.trim();
       }
     },
@@ -121,7 +121,7 @@ export default function Users() {
     onSubmit: (data, mode) => {
       // Validate password match
       if (data.password !== data.confirmPassword) {
-        return alert("Passwords don't match");
+        toast.error("Passwords don't match");
       }
 
       // Remove confirmPassword before sending to API
@@ -224,7 +224,7 @@ export default function Users() {
       </Box>
       <DataTable
         title="Users Management"
-        rows={sortedData}
+        rows={sortedData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)} //pagination
         columns={COLUMNS}
         loading={loading}
         page={page}
@@ -258,4 +258,4 @@ export default function Users() {
       </FormDialog>
     </Box>
   );
-} 
+}

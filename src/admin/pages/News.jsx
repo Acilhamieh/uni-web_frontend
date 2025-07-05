@@ -252,7 +252,7 @@ export default function News() {
       </Box>
       <DataTable
         title="News & Announcements"
-        rows={sortedData}
+        rows={sortedData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)} //pagination
         columns={COLUMNS}
         loading={loading}
         page={page}

@@ -1,10 +1,11 @@
 import React from 'react';
 
-import TeamCard from './TeamCard';
+import TeamCard from '../components/TeamCard';
 import { FaGithub, FaLinkedin } from 'react-icons/fa';
 import { MdEmail } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
-import './AboutUs.css';
+import profile from "../assets/profile-photo.jpg";
+import '../styles/AboutUs.css';
 
 const teamMembers = [
     {
@@ -12,7 +13,7 @@ const teamMembers = [
         departement: "Frontend Developer",
         description: "Responsible for the frontend design and user interface, ensuring a clear, accessible, and user-friendly experience. Passionate about creating intuitive digital solutions that enhance the student experience.",
         img: {
-            src: "src/assets/profile-photo.jpg",
+            src: profile,
             alt: "Raghad - Frontend Developer"
         },
         skills: ["React", "CSS", "UI/UX", "Responsive Design"]
@@ -22,7 +23,7 @@ const teamMembers = [
         departement: "Backend Developer",
         description: "Responsible for backend development, database structure, and the technical functionality of the system. Focused on building robust and efficient systems that power the platform.",
         img: {
-            src: "src/assets/profile-photo.jpg",
+            src: profile,
             alt: "Acil - Backend Developer"
         },
         skills: ["Node.js","Express.js" , "SupaBase", "API Design"]

@@ -1,5 +1,5 @@
 import React from "react";
-import "./Services.css";
+import "../styles/Services.css";
 import { FaFileAlt, FaInfoCircle, FaBook, FaLink, FaFolderOpen, FaBriefcase } from "react-icons/fa";
 
 const services = [

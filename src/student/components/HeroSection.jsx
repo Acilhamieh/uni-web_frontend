@@ -9,6 +9,7 @@ import {
     faChalkboardTeacher
 } from '@fortawesome/free-solid-svg-icons';
 import { Navigate, useNavigate } from 'react-router-dom';
+import heroImage from "../assets/hero-image.webp";
 
 export default function HeroSection() {
     const navigate = useNavigate();
@@ -32,7 +33,7 @@ export default function HeroSection() {
             </div>            
             <div className="hero-image">
                 <img
-                    src="src\assets\hero-image.webp"
+                    src={heroImage}
                     alt="Students collaborating and learning together illustration"
                 />
             </div>

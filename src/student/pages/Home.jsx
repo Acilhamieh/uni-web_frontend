@@ -1,7 +1,7 @@
 import Header from '../components/Header';
 import HeroSection from '../components/HeroSection'
-;import Services from '../components/Services';
-import AboutUs from '../components/AboutUs';
+;import Services from './Services';
+import AboutUs from './AboutUs';
 import Footer from '../components/Footer';
 
 

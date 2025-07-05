@@ -207,7 +207,7 @@ export default function Doctors() {
       </Box>
       <DataTable
         title="Doctors"
-        rows={sortedData}
+        rows={sortedData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)} //pagination
         columns={COLUMNS}
         loading={loading}
         page={page}

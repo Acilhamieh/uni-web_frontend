@@ -4,7 +4,7 @@ import {
   FaGraduationCap, FaBook, FaLaptopCode,
   FaBrain, FaUniversity, FaChalkboardTeacher
 } from 'react-icons/fa';
-import './ContactUs.css';
+import '../styles/ContactUs.css';
 
 const ContactUs = () => {
   const [formData, setFormData] = useState({
@@ -120,17 +120,7 @@ const ContactUs = () => {
               <label>Last Name</label>
             </div>
           </div>
-          <div className="form-group">
-            <input 
-              type="text" 
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              required 
-            />
-            <label>Name</label>
-            {errors.name && <span className="error">{errors.name}</span>}
-          </div>
+        
           <div className="form-group">
             <input 
               type="email" 

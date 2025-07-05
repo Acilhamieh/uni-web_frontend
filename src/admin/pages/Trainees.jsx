@@ -196,7 +196,7 @@ export default function Trainees() {
       </Box>
       <DataTable
         title="Trainees Management"
-        rows={sortedData}
+        rows={sortedData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)} //pagination
         columns={COLUMNS}
         loading={loading}
         page={page}

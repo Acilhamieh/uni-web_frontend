@@ -1,23 +1,13 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
-
-// Layouts
-import MainLayout from './student/layouts/MainLayout';
-
-// Pages
-import Home from './student/pages/Home';
 import Login from './student/pages/Login';
 import Signup from './student/pages/Signup';
-import AboutUsPg from './student/pages/AboutUsPg';
-import ServicesPg from './student/pages/ServicesPg';
-import ContactUsPg from './student/pages/ContactUsPg';
-import News from './student/pages/News';
+
+// Student
+import StudentApp from './student/StudentApp';
 
 // Admin
-import AdminApp from './admin/App';
-
-// Styles
-import './student/styles/global.css';
+import AdminApp from './admin/AdminApp';
 
 export default function App() {
   return (
@@ -49,13 +39,7 @@ export default function App() {
     <Router>
       <Routes>
           {/* Public Routes */}
-          <Route element={<MainLayout />}>
-        <Route path="/" element={<Home />} />
-        <Route path="/aboutus" element={<AboutUsPg />} />
-        <Route path="/services" element={<ServicesPg />} />
-        <Route path="/contactus" element={<ContactUsPg />} />
-        <Route path="/news" element={<News/>}/>
-          </Route>
+          <Route path="/student/*" element={<StudentApp />} />
 
           {/* Auth Routes */}
           <Route path="/login" element={<Login />} />

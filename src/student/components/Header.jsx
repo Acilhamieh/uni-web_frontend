@@ -32,19 +32,19 @@ export default function Header() {
                 <nav className={isMenuOpen ? 'open' : ''}>
                     <ul className='links-container'>
                         <li className='link-container'>
-                            <Link to="/" onClick={() => setIsMenuOpen(false)}>Home</Link>
+                            <Link to="home" onClick={() => setIsMenuOpen(false)}>Home</Link>
                         </li>
                         <li className='link-container'>
-                            <Link to="/services" onClick={() => setIsMenuOpen(false)}>Services</Link>
+                            <Link to="services" onClick={() => setIsMenuOpen(false)}>Services</Link>
                         </li>
                         <li className='link-container'>
-                            <Link to="/aboutus" onClick={() => setIsMenuOpen(false)}>About us</Link>
+                            <Link to="aboutus" onClick={() => setIsMenuOpen(false)}>About us</Link>
                         </li>
                         <li className='link-container'>
-                            <Link to="/contactus" onClick={() => setIsMenuOpen(false)}>Contact us</Link>
+                            <Link to="contactus" onClick={() => setIsMenuOpen(false)}>Contact us</Link>
                         </li>
                         <li className='link-container'>
-                            <Link to="/news" onClick={() => setIsMenuOpen(false)}>News & Events</Link>
+                            <Link to="news" onClick={() => setIsMenuOpen(false)}>News & Events</Link>
                         </li>
                     </ul>
                 </nav>

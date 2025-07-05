@@ -294,7 +294,7 @@ export default function Projects() {
       </Box>
       <DataTable
         title="Projects"
-        rows={sortedData}
+        rows={sortedData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)} //pagination
         columns={COLUMNS}
         loading={loading || doctorsLoading}
         page={page}
