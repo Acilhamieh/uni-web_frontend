@@ -2,7 +2,7 @@ import './AccessForm.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRightToBracket } from '@fortawesome/free-solid-svg-icons';
 import FormHandler from './FormHandler';
-import Logo from './Logo';
+import Logo from '../../student/components/Logo';
 
 export default function AccessForm(props) {
     return (
