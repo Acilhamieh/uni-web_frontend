@@ -24,115 +24,35 @@ const REFERENCE_TYPES = {
   'online': { color: '#ff9800', icon: LinkIcon },
 };
 
-const COLUMNS = [
-  { field: 'id', headerName: 'ID', width: 90, sortable: true },
-  { 
-    field: 'title', 
-    headerName: 'Title', 
-    width: 300, 
-    sortable: true,
-    renderCell: (row) => {
-      const TypeIcon = REFERENCE_TYPES[row.type].icon;
-      return (
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          <TypeIcon sx={{ color: REFERENCE_TYPES[row.type].color }} />
-          {row.title}
-        </Box>
-      );
-    }
-  },
-  { 
-    field: 'type', 
-    headerName: 'Type', 
-    width: 130, 
-    sortable: true,
-    renderCell: (row) => (
-      <Chip
-        label={row.type.charAt(0).toUpperCase() + row.type.slice(1)}
-        size="small"
-        sx={{
-          backgroundColor: `${REFERENCE_TYPES[row.type].color}20`,
-          color: REFERENCE_TYPES[row.type].color,
-          fontWeight: 500,
-        }}
-      />
-    )
-  },
-  { field: 'author', headerName: 'Author', width: 200, sortable: true },
-  { field: 'courseCode', headerName: 'Course Code', width: 200, sortable: true },
-  { 
-    field: 'year', 
-    headerName: 'Year', 
-    width: 100, 
-    sortable: true,
-    type: 'number'
-  },
-  { 
-    field: 'status', 
-    headerName: 'Status', 
-    width: 130, 
-    sortable: true,
-    renderCell: (row) => (
-      <Chip
-        label={row.status}
-        size="small"
-        sx={{
-          backgroundColor: row.status === 'available' ? 'rgba(46, 125, 50, 0.1)' : 'rgba(211, 47, 47, 0.1)',
-          color: row.status === 'available' ? '#2e7d32' : '#d32f2f',
-          fontWeight: 500,
-        }}
-      />
-    )
-  },
-  {
-    field: 'actions',
-    headerName: 'Actions',
-    width: 120,
-    sortable: false,
-    renderCell: (row) => (
-      <ActionButtons
-        onEdit={() => handleOpen('edit', row)}
-        onDelete={() => handleDelete(row.id, referencesUrl)}
-      />
-    )
-  }
-];
 
 const FORM_FIELDS = [
   { name: 'title', label: 'Title', type: 'text', required: true },
-  { 
-    name: 'type', 
-    label: 'Type', 
-    type: 'select', 
+  {
+    name: 'type',
+    label: 'Type',
+    type: 'select',
     required: true,
     options: ['textBook', 'playlist', 'documentation']
   },
   { name: 'author', label: 'Author', type: 'text', required: true },
-  { 
-    name: 'courseCode', 
-    label: 'CourseCode', 
-    type: 'select', 
+  {
+    name: 'course_name',
+    label: 'Course Name',
+    type: 'select',
     required: true,
-    options: [], // Will be populated with course codes
+    options: [], // Will be populated with course Names
     helperText: 'Select the course for this reference'
   },
   { name: 'year', label: 'Year', type: 'number', required: true },
-  { 
-    name: 'description', 
-    label: 'Description', 
-    type: 'text', 
+  {
+    name: 'description',
+    label: 'Description',
+    type: 'text',
     required: true,
     multiline: true,
     rows: 3
   },
-  { name: 'url', label: 'URL', type: 'text', required: false },
-  { 
-    name: 'status', 
-    label: 'Status', 
-    type: 'select', 
-    required: true,
-    options: ['available', 'unavailable']
-  },
+  { name: 'url', label: 'URL', type: 'text', required: false }
 ];
 
 export default function References() {
@@ -152,6 +72,63 @@ export default function References() {
     handleDelete
   } = useDataFetching(referencesUrl);
 
+  const COLUMNS = [
+    { field: 'id', headerName: 'ID', width: 90, sortable: true },
+    {
+      field: 'title',
+      headerName: 'Title',
+      width: 300,
+      sortable: true,
+      renderCell: (row) => {
+        const TypeIcon = REFERENCE_TYPES[row.type].icon;
+        return (
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <TypeIcon sx={{ color: REFERENCE_TYPES[row.type].color }} />
+            {row.title}
+          </Box>
+        );
+      }
+    },
+    {
+      field: 'type',
+      headerName: 'Type',
+      width: 130,
+      sortable: true,
+      renderCell: (row) => (
+        <Chip
+          label={row.type.charAt(0).toUpperCase() + row.type.slice(1)}
+          size="small"
+          sx={{
+            backgroundColor: `${REFERENCE_TYPES[row.type].color}20`,
+            color: REFERENCE_TYPES[row.type].color,
+            fontWeight: 500,
+          }}
+        />
+      )
+    },
+    { field: 'author', headerName: 'Author', width: 200, sortable: true },
+    { field: 'course_name', headerName: 'Course Name', width: 200, sortable: true },
+    {
+      field: 'year',
+      headerName: 'Year',
+      width: 100,
+      sortable: true,
+      type: 'number'
+    },
+    {
+      field: 'actions',
+      headerName: 'Actions',
+      width: 120,
+      sortable: false,
+      renderCell: (row) => (
+        <ActionButtons
+          onEdit={() => handleOpen('edit', row)}
+          onDelete={() => handleDelete(row.id, referencesUrl)}
+        />
+      )
+    }
+  ];
+
   const {
     data: coursesData,
     loading: coursesLoading,
@@ -161,9 +138,9 @@ export default function References() {
   useEffect(() => {
     if (coursesData) {
       // Update the course options in FORM_FIELDS with just the course codes
-      const courseField = FORM_FIELDS.find(field => field.name === 'courseCode');
+      const courseField = FORM_FIELDS.find(field => field.name === 'course_name');
       if (courseField) {
-        courseField.options = coursesData.map(course => course.code);
+        courseField.options = coursesData.map(course => course.name);
       }
       setCourses(coursesData);
     }
