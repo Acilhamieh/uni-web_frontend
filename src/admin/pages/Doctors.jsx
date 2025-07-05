@@ -47,7 +47,17 @@ export default function Doctors() {
 
   const COLUMNS = [
     { field: 'id', headerName: 'ID', width: 90, sortable: true },
-    { field: 'full_name', headerName: 'Full Name', width: 250, sortable: true },
+    {
+      field: 'full_name',
+      headerName: 'Full Name',
+      width: 250,
+      sortable: true,
+      valueGetter: (row) => {
+        const firstName = row.first_name || '';
+        const lastName = row.last_name;
+        return `${firstName} ${lastName}`.trim();
+      }
+    },
     { field: 'email', headerName: 'Email', width: 220, sortable: true },
     { field: 'phone', headerName: 'Phone', width: 150, sortable: true },
     { field: 'linkedin_url', headerName: 'Linkedin Account', width: 150, sortable: true },
@@ -107,8 +117,8 @@ export default function Doctors() {
     console.log(row);
     handleOpen('edit', {
       id: row.id,
-      first_name: (row.full_name).split(' ')[0],
-      last_name: (row.full_name).split(' ')[1],
+      first_name: row.first_name,
+      last_name: row.last_name,
       email: row.email,
       phone: row.phone,
       linkedin_url: row.linkedin_url,
