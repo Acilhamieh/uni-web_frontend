@@ -34,7 +34,7 @@ const FORM_FIELDS = [
     }
   },
   {
-    name: 'academicYear',
+    name: 'academic_year',
     label: 'Academic Year',
     type: 'select',
     required: true,
@@ -58,14 +58,14 @@ const FORM_FIELDS = [
     rows: 4
   },
   {
-    name: 'teamMembers',
+    name: 'team',
     label: 'Team Members',
     type: 'text',
     required: true,
     helperText: 'Enter team member names separated by commas (e.g., "John Smith, Jane Doe")'
   },
   {
-    name: 'reportPdf',
+    name: 'report_pdf_url',
     label: 'Project Report',
     type: 'file',
     required: true,
@@ -73,7 +73,7 @@ const FORM_FIELDS = [
     helperText: 'Upload your project report (PDF format only, max 10MB)'
   },
   {
-    name: 'presentationPdf',
+    name: 'presentation_pdf_url',
     label: 'Project Presentation',
     type: 'file',
     required: true,
@@ -142,7 +142,7 @@ export default function Projects() {
         </Typography>
       )
     },
-    { field: 'academicYear', headerName: 'Academic Year', width: 150, sortable: true },
+    { field: 'academic_year', headerName: 'Academic Year', width: 150, sortable: true },
     {
       field: 'actions',
       headerName: 'Actions',
