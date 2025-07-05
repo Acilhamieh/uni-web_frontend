@@ -20,8 +20,8 @@ const coursesUrl = `${backendUrl}/api/courses/`;
 
 const REFERENCE_TYPES = {
   'textbook': { color: '#2196f3', icon: MenuBookIcon },
-  'article': { color: '#4caf50', icon: ArticleIcon },
-  'online': { color: '#ff9800', icon: LinkIcon },
+  'documentation': { color: '#4caf50', icon: ArticleIcon },
+  'playlist': { color: '#ff9800', icon: LinkIcon },
 };
 
 
@@ -32,16 +32,16 @@ const FORM_FIELDS = [
     label: 'Type',
     type: 'select',
     required: true,
-    options: ['textBook', 'playlist', 'documentation']
+    options: ['textbook', 'playlist', 'documentation']
   },
   { name: 'author', label: 'Author', type: 'text', required: true },
   {
-    name: 'course_name',
+    name: 'course_id',
     label: 'Course Name',
     type: 'select',
     required: true,
-    options: [], // Will be populated with course Names
     helperText: 'Select the course for this reference'
+    // options will be passed dynamically
   },
   { name: 'year', label: 'Year', type: 'number', required: true },
   {
@@ -107,7 +107,16 @@ export default function References() {
       )
     },
     { field: 'author', headerName: 'Author', width: 200, sortable: true },
-    { field: 'course_name', headerName: 'Course Name', width: 200, sortable: true },
+    {
+      field: 'course_id',
+      headerName: 'Course Name',
+      width: 200,
+      sortable: true,
+      renderCell: (row) => {
+        const course = courses.find(c => c.id === row.course_id);
+        return course ? course.name : '';
+      }
+    },
     {
       field: 'year',
       headerName: 'Year',
@@ -137,10 +146,10 @@ export default function References() {
 
   useEffect(() => {
     if (coursesData) {
-      // Update the course options in FORM_FIELDS with just the course codes
-      const courseField = FORM_FIELDS.find(field => field.name === 'course_name');
+      // Update the course options in FORM_FIELDS with value/label pairs for select
+      const courseField = FORM_FIELDS.find(field => field.name === 'course_id');
       if (courseField) {
-        courseField.options = coursesData.map(course => course.name);
+        courseField.options = coursesData.map(course => ({ value: course.id, label: course.name }));
       }
       setCourses(coursesData);
     }
@@ -268,9 +277,10 @@ export default function References() {
             {...field}
             value={formData[field.name]}
             onChange={handleChange}
+            options={field.name === 'course_id' ? courses.map(c => ({ value: c.id, label: c.name })) : field.options}
           />
         ))}
       </FormDialog>
     </Box>
   );
-} 
+}
