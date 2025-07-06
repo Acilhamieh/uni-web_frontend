@@ -86,7 +86,7 @@ export default function Courses() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [searchText, setSearchText] = useState('');
-  const [sortBy, setSortBy] = useState('id');
+  const [sortBy, setSortBy] = useState('semester');
   const [sortDirection, setSortDirection] = useState('asc');
   const [doctors, setDoctors] = useState([]);
 

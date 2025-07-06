@@ -16,7 +16,7 @@ const sessionsUrl = `${backendUrl}/api/sessions/`;
 
 const FORM_FIELDS = [
   { 
-    name: 'course_code', 
+    name: 'course_name', 
     label: 'Course', 
     type: 'select', 
     required: true,
@@ -46,6 +46,14 @@ const FORM_FIELDS = [
     required: true,
     options: ['partial', 'final'],
     helperText: 'Select whether this is a partial or final exam'
+  },
+  {
+    name: 'final_type',
+    label: 'Fianl Type',
+    type: 'select',
+    required: true,
+    options: ['tp', 'td'],
+    helperText: 'Select whether this is a TP or TD exam'
   },
   { 
     name: 'question_pdf_url', 
@@ -83,13 +91,13 @@ export default function Sessions() {
   const COLUMNS = [
     { field: 'id', headerName: 'ID', width: 90, sortable: true },
     { 
-      field: 'course_code',
+      field: 'course_name',
       headerName: 'Course',
       width: 250,
       sortable: true,
       renderCell: (row) => (
         <Typography variant="body2" sx={{ color: 'var(--main-color2)' }}>
-          {row.courseName}
+          {row.course_name}
         </Typography>
       ),
     },
@@ -101,13 +109,33 @@ export default function Sessions() {
       sortable: true,
       renderCell: (row) => (
         <Chip
-          label={row.examType}
+          label={row.exam_type}
           size="small"
           sx={{
             backgroundColor: 
-              row.examType === 'partial' ? 'rgba(25, 118, 210, 0.1)' : 'rgba(46, 125, 50, 0.1)',
+              row.exam_type === 'partial' ? 'rgba(25, 118, 210, 0.1)' : 'rgba(46, 125, 50, 0.1)',
             color: 
-              row.examType === 'partial' ? '#1976d2' : '#2e7d32',
+              row.exam_type === 'partial' ? '#1976d2' : '#2e7d32',
+            fontWeight: 500,
+            textTransform: 'capitalize'
+          }}
+        />
+      ),
+    },
+    { 
+      field: 'final_type', 
+      headerName: 'Final Type', 
+      width: 130, 
+      sortable: true,
+      renderCell: (row) => (
+        <Chip
+          label={row.final_type}
+          size="small"
+          sx={{
+            backgroundColor: 
+              row.final_type === 'tp' ? 'rgba(25, 118, 210, 0.1)' : 'rgba(46, 125, 50, 0.1)',
+            color: 
+              row.final_type === 'td' ? '#1976d2' : '#2e7d32',
             fontWeight: 500,
             textTransform: 'capitalize'
           }}

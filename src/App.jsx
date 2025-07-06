@@ -39,7 +39,7 @@ export default function App() {
     <Router>
       <Routes>
           {/* Public Routes */}
-          <Route path="/" element={<Login />} />
+          <Route path="/*" element={<StudentApp />} />
           <Route path="/student/*" element={<StudentApp />} />
 
           {/* Auth Routes */}
