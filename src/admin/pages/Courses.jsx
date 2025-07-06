@@ -119,7 +119,7 @@ export default function Courses() {
   }, [doctorsData]);
 
   const COLUMNS = [
-    { field: 'id', headerName: 'ID', width: 90, sortable: true },
+    { field: 'id', headerName: 'ID', width: 50, sortable: true },
     { field: 'code', headerName: 'Code', width: 120, sortable: true },
     { field: 'name', headerName: 'Name', width: 250, sortable: true },
     { field: 'credits', headerName: 'Credits', width: 100, sortable: true, type: 'number' },

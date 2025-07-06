@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import emailjs from "emailjs-com";
+import {ToastContainer , toast} from 'react-toastify';
 import { 
   FaEnvelope, FaMapMarkerAlt, FaPhone,
   FaGraduationCap, FaBook, FaLaptopCode,
@@ -6,22 +8,33 @@ import {
 } from 'react-icons/fa';
 import '../styles/ContactUs.css';
 
-const ContactUs = () => {
+export default function ContactUs(){
   const [formData, setFormData] = useState({
-    name: '',
+    firstName: '',
+    lastName: '',
     email: '',
     message: ''
   });
+
   const [errors, setErrors] = useState({});
+
+  const [status, setStatus] = useState("");
 
   const validateForm = () => {
     let tempErrors = {};
     
-    // Name validation
-    if (!formData.name.trim()) {
-      tempErrors.name = 'Name is required';
-    } else if (formData.name.length < 3) {
-      tempErrors.name = 'Name must be at least 3 characters';
+    // First Name validation
+    if (!formData.firstName.trim()) {
+      tempErrors.firstName = 'First Name is required';
+    } else if (formData.firstName.length < 3) {
+      tempErrors.firstName = 'First Name must be at least 3 characters';
+    }
+
+    // Last Name validation
+    if (!formData.lastName.trim()) {
+      tempErrors.lastName = 'Last Name is required';
+    } else if (formData.lastName.length < 3) {
+      tempErrors.lastName = 'Last Name must be at least 3 characters';
     }
 
     // Email validation
@@ -61,12 +74,48 @@ const ContactUs = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validateForm()) {
-      // Proceed with form submission
+      
       console.log('Form submitted:', formData);
+
+      // Body to send to EmailJS
+    const templateParams = {
+      from_firstname: formData.firstName,
+      from_lastname: formData.lastName,
+      from_email: formData.email,
+      message: formData.message,
+    };
+
+    emailjs
+      .send(
+        "service_8vx3byk", // Replace with your EmailJS service ID
+        "template_5l1kxg5", // Replace with your EmailJS template ID
+        templateParams,
+        "hfrDkxJrBUmEF__Z6" // Replace with your EmailJS public key
+      )
+      .then(
+        (response) => {
+          console.log("SUCCESS!", response.status, response.text);
+          setStatus("Message sent successfully!");
+          toast.success("Message sent successfully!");
+
+          //reset form data
+          setFormData({ firstName: "", lastName: "", email: "", message: "" });
+        },
+        (err) => {
+          console.log("FAILED...", err);
+          setStatus("Failed to send message.");
+          toast.error("Failed to send message. Please try again later.");
+
+        }
+      );
     }
   };
 
+
   return (
+    <>
+    <ToastContainer position="bottom-right" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover />
+
     <div className="contact-section">
       <div className="animated-background">
         <FaGraduationCap className="bg-icon icon1" />
@@ -147,7 +196,7 @@ const ContactUs = () => {
         </form>
       </div>
     </div>
+    </>
   );
 };
 
-export default ContactUs;
