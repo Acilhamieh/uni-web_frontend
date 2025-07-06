@@ -9,6 +9,7 @@ import AboutUs from './pages/AboutUs';
 import Services from './pages/Services';
 import ContactUs from './pages/ContactUs';
 import News from './pages/News';
+import Courses from './pages/Courses';
 
 // Styles
 import './styles/global.css';
@@ -23,6 +24,7 @@ export default function StudentApp() {
         <Route path="services" element={<Services />} />
         <Route path="contactus" element={<ContactUs />} />
         <Route path="news" element={<News />} />
+        <Route path="courses" element={<Courses />} />
         <Route path="*" element={<Navigate to="home" replace />} />
       </Route>
     </Routes>
