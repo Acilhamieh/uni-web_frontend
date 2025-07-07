@@ -58,6 +58,14 @@ const FORM_FIELDS = [
     helperText: 'Select whether this is a TP or TD exam'
   },
   {
+    name: 'exam_round',
+    label: 'Exam Round',
+    type: 'select',
+    required: true,
+    options: ['1', '2'],
+    helperText: 'Select the exam round'
+  },
+  {
     name: 'question_pdf_url',
     label: 'Question Paper PDF URL',
     type: 'file',
@@ -141,6 +149,26 @@ export default function Sessions() {
               row.final_type === 'tp' ? 'rgba(25, 118, 210, 0.1)' : 'rgba(46, 125, 50, 0.1)',
             color:
               row.final_type === 'td' ? '#1976d2' : '#2e7d32',
+            fontWeight: 500,
+            textTransform: 'capitalize'
+          }}
+        />
+      ),
+    },
+    {
+      field: 'exam_round',
+      headerName: 'Exam Round',
+      width: 130,
+      sortable: true,
+      renderCell: (row) => (
+        <Chip
+          label={row.exam_round}
+          size="small"
+          sx={{
+            backgroundColor:
+              row.exam_round === '1' ? 'rgba(25, 118, 210, 0.1)' : 'rgba(46, 125, 50, 0.1)',
+            color:
+              row.exam_round === '1' ? '#1976d2' : '#2e7d32',
             fontWeight: 500,
             textTransform: 'capitalize'
           }}

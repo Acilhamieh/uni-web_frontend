@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Button, Typography } from '@mui/material';
 import { toast } from 'react-toastify';
+import Link from '@mui/material/Link';
+import Chip from '@mui/material/Chip';
+import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import AddIcon from '@mui/icons-material/Add';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import DataTable from '../components/DataTable';
@@ -144,6 +147,80 @@ export default function Projects() {
       )
     },
     { field: 'academic_year', headerName: 'Academic Year', width: 150, sortable: true },
+    {
+      field: 'report_url_pdf',
+      headerName: 'Report PDF',
+      width: 150,
+      sortable: false,
+      renderCell: (row) => (
+        row.report_url_pdf ? (
+          <Link
+            href={row.report_url_pdf}
+            target="_blank"
+            rel="noopener noreferrer"
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 1,
+              color: 'var(--main-color2)',
+              textDecoration: 'none',
+              '&:hover': {
+                textDecoration: 'underline'
+              }
+            }}
+          >
+            <PictureAsPdfIcon fontSize="small" />
+            View PDF
+          </Link>
+        ) : (
+          <Chip
+            label="No PDF"
+            size="small"
+            sx={{
+              backgroundColor: 'rgba(211, 47, 47, 0.1)',
+              color: '#d32f2f',
+            }}
+          />
+        )
+      ),
+    },
+    {
+      field: 'presentation_url_pdf',
+      headerName: 'Presentation PDF',
+      width: 150,
+      sortable: false,
+      renderCell: (row) => (
+        row.presentation_url_pdf ? (
+          <Link
+            href={row.presentation_url_pdf}
+            target="_blank"
+            rel="noopener noreferrer"
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 1,
+              color: 'var(--main-color2)',
+              textDecoration: 'none',
+              '&:hover': {
+                textDecoration: 'underline'
+              }
+            }}
+          >
+            <PictureAsPdfIcon fontSize="small" />
+            View PDF
+          </Link>
+        ) : (
+          <Chip
+            label="No PDF"
+            size="small"
+            sx={{
+              backgroundColor: 'rgba(211, 47, 47, 0.1)',
+              color: '#d32f2f',
+            }}
+          />
+        )
+      ),
+    },
     {
       field: 'actions',
       headerName: 'Actions',

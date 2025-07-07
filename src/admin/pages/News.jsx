@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Box, Button, Chip, Typography } from '@mui/material';
+import Link from '@mui/material/Link';
+import ImageIcon from '@mui/icons-material/Image';
 import AddIcon from '@mui/icons-material/Add';
 import AnnouncementIcon from '@mui/icons-material/Announcement';
 import EventIcon from '@mui/icons-material/Event';
@@ -110,6 +112,43 @@ export default function News() {
       )
     },
     { field: 'author', headerName: 'Author', width: 180, sortable: true },
+    {
+      field: 'image_url',
+      headerName: 'Image',
+      width: 150,
+      sortable: false,
+      renderCell: (row) => (
+        row.image_url ? (
+          <Link
+            href={row.image_url}
+            target="_blank"
+            rel="noopener noreferrer"
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 1,
+              color: 'var(--main-color5)',
+              textDecoration: 'none',
+              '&:hover': {
+                textDecoration: 'underline'
+              }
+            }}
+          >
+            <ImageIcon fontSize="small" />
+            View Image
+          </Link>
+        ) : (
+          <Chip
+            label="No Image"
+            size="small"
+            sx={{
+              backgroundColor: 'rgba(211, 47, 47, 0.1)',
+              color: '#d32f2f',
+            }}
+          />
+        )
+      ),
+    },
     {
       field: 'actions',
       headerName: 'Actions',

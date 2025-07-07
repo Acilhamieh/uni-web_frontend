@@ -41,7 +41,7 @@ const FORM_FIELDS = [
       }
     }
   },
-  { name: 'classroom_url', label: 'Classroom', type: 'text', required: true },
+  { name: 'classroom_url', label: 'Classroom', type: 'text', required: false },
   {
     name: 'level',
     label: 'Level',
