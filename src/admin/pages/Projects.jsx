@@ -12,16 +12,17 @@ import { useFormHandling } from '../hooks/useFormHandling';
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 const projectsUrl = `${backendUrl}/api/projects/`;
+
 const doctorsUrl = `${backendUrl}/api/doctors/`;
 
 const FORM_FIELDS = [
   { name: 'title', label: 'Project Title', type: 'text', required: true },
   {
-    name: 'supervisor',
+    name: 'supervisor_id',
     label: 'Supervisor',
     type: 'select',
     required: true,
-    options: [], // Will be populated with doctor names
+    options: [], // This will be populated dynamically
     SelectProps: {
       MenuProps: {
         PaperProps: {
@@ -58,14 +59,14 @@ const FORM_FIELDS = [
     rows: 4
   },
   {
-    name: 'team',
+    name: 'team_members',
     label: 'Team Members',
     type: 'text',
     required: true,
     helperText: 'Enter team member names separated by commas (e.g., "John Smith, Jane Doe")'
   },
   {
-    name: 'report_pdf_url',
+    name: 'report_url_pdf',
     label: 'Project Report',
     type: 'file',
     required: true,
@@ -73,7 +74,7 @@ const FORM_FIELDS = [
     helperText: 'Upload your project report (PDF format only, max 10MB)'
   },
   {
-    name: 'presentation_pdf_url',
+    name: 'presentation_url_pdf',
     label: 'Project Presentation',
     type: 'file',
     required: true,
@@ -99,46 +100,45 @@ export default function Projects() {
     handleDelete
   } = useDataFetching(projectsUrl);
 
-  const {
-    data: doctorsData,
-    loading: doctorsLoading,
-    error: doctorsError
-  } = useDataFetching(doctorsUrl);
-
-  useEffect(() => {
-    if (doctorsData) {
-      // Update the supervisor options in FORM_FIELDS
-      const supervisorField = FORM_FIELDS.find(field => field.name === 'supervisor');
-      if (supervisorField) {
-        supervisorField.options = doctorsData.map(doctor => ({
-          value: doctor.id,
-          label: doctor.name // Assuming doctors have a name attribute
-        }));
+    const {
+      data: doctorsData,
+      loading: doctorsLoading,
+      error: doctorsError
+    } = useDataFetching(doctorsUrl);
+  
+    useEffect(() => {
+      if (doctorsData) {
+        const supervisorField = FORM_FIELDS.find(field => field.name === 'supervisor_id');
+        if (supervisorField) {
+          supervisorField.options = doctorsData.map(doctor => ({
+            value: doctor.id,
+            label: doctor.full_name
+          }));
+        }
+        setDoctors(doctorsData);
       }
-      setDoctors(doctorsData);
-    }
-  }, [doctorsData]);
+    }, [doctorsData]);
 
   const COLUMNS = [
     { field: 'id', headerName: 'ID', width: 90, sortable: true },
     { field: 'title', headerName: 'Title', width: 300, sortable: true },
-    {
-      field: 'supervisor',
-      headerName: 'Supervisor',
-      width: 200,
+    { 
+      field: 'supervisor_id', 
+      headerName: 'Supervisor', 
+      width: 180, 
       sortable: true,
-      valueGetter: (params) => {
-        const doctor = doctors.find(doc => doc.id === params.row.supervisor);
-        return doctor ? doctor.name : params.row.supervisor; // Display name, fall back to ID
+      renderCell: (row) => {
+        const doctor = doctors.find(d => d.id === row.supervisor_id);
+        return doctor ? doctor.full_name : '';
       }
     },
     {
-      field: 'team',
-      headerName: 'Team',
+      field: 'team_members',
+      headerName: 'Team Members',
       width: 200,
       renderCell: (row) => (
         <Typography variant="body2">
-          {row.team.map(member => member.name).join(', ')}
+          {row.team_members.join(', ')}
         </Typography>
       )
     },
@@ -184,22 +184,24 @@ export default function Projects() {
       
       // Add basic project data
       formData.append('title', data.title);
-      formData.append('supervisor', data.supervisor); // This should be the doctor's ID
-      formData.append('academicYear', data.academicYear);
+      formData.append('supervisor_id', data.supervisor_id); // This should be the doctor's ID
+      formData.append('academic_year', data.academic_year);
       formData.append('description', data.description);
       
       // Add team members as JSON string
-      const team = data.teamMembers.split(',').map(name => ({
+      const team = data.team_members.split(',').map(name => ({
         name: name.trim()
       }));
-      formData.append('team', JSON.stringify(team));
+
+      
+      formData.append('team_members', team);
       
       // Add files if they exist
-      if (data.reportPdf) {
-        formData.append('reportPdf', data.reportPdf);
+      if (data.report_url_pdf) {
+        formData.append('report_url_pdf', data.report_url_pdf);
       }
-      if (data.presentationPdf) {
-        formData.append('presentationPdf', data.presentationPdf);
+      if (data.presentation_url_pdf) {
+        formData.append('presentation_url_pdf', data.presentation_url_pdf);
       }
 
       // Send the FormData to the server

@@ -21,10 +21,10 @@ const PROGRAM_TYPES = {
 };
 
 const FORM_FIELDS = [
-  { name: 'name', label: 'Full Name', type: 'text', required: true },
+  { name: 'tile', label: 'Title', type: 'text', required: true },
   { name: 'email', label: 'Email', type: 'email', required: true },
   { name: 'phone', label: 'Phone', type: 'text', required: true },
-  { name: 'university', label: 'University', type: 'text', required: true },
+  { name: 'institution', label: 'Institution', type: 'text', required: true },
   { name: 'domain', label: 'Domain', type: 'text', required: true },
   { name: 'program', label: 'Program', type: 'text', required: true },
   { name: 'start_date', label: 'Start Date', type: 'date', required: true },
@@ -36,7 +36,8 @@ const FORM_FIELDS = [
     type: 'text',
     multiline: true,
     rows: 3,
-    required: true
+    required: true,
+    helperText: 'Enter objectives separated by commas (e.g., "Learn React, Improve teamwork")'
   },
   {
     name: 'skills',
@@ -47,7 +48,7 @@ const FORM_FIELDS = [
     required: true,
     helperText: 'Enter skills separated by commas (e.g., "JavaScript, React, Teamwork")'
   },
-  { name: 'notes', label: 'Notes', type: 'text', multiline: true, rows: 2, required: false },
+  { name: 'notes', label: 'Notes', type: 'text', multiline: true, rows: 2, required: false ,helperText: 'Enter any additional notes or comments separated by commas' },
 ];
 
 export default function Trainees() {
@@ -68,7 +69,7 @@ export default function Trainees() {
 
   const COLUMNS = [
     { field: 'id', headerName: 'ID', width: 90, sortable: true },
-    { field: 'name', headerName: 'Name', width: 200, sortable: true },
+    { field: 'title', headerName: 'Title', width: 200, sortable: true },
     { field: 'email', headerName: 'Email', width: 220, sortable: true },
     { field: 'phone', headerName: 'Phone', width: 150, sortable: true },
     { field: 'institution', headerName: 'Institution', width: 200, sortable: true },
@@ -77,8 +78,6 @@ export default function Trainees() {
     { field: 'start_date', headerName: 'Start Date', width: 150, sortable: true },
     { field: 'end_date', headerName: 'End Date', width: 150, sortable: true },
     { field: 'supervisor', headerName: 'Supervisor', width: 180, sortable: true },
-    { field: 'objectives', headerName: 'Objectives', width: 250, sortable: true },
-    { field: 'skills', headerName: 'Skills', width: 250, sortable: true },
     {
       field: 'actions',
       headerName: 'Actions',
@@ -105,10 +104,27 @@ export default function Trainees() {
   } = useFormHandling({
     initialData: {},
     onSubmit: (data, mode) => {
+
+      const objectives = data.objectives.split(',').map(objective => ({
+        objective: objective.trim()
+      }));
+
+      const skills = data.skills.split(',').map(skill => ({
+        skill: skill.trim()
+      }));
+
+      const notes = data.notes.split(',').map(note => ({
+        note: note.trim()
+      }));
+
       const processedData = {
         ...data,
+        objectives: objectives,
+        skills: skills,
+        notes: notes,
         created_by: 1,
       };
+
       if (mode === 'edit' && data.id) {
         processedData.id = data.id;
       }

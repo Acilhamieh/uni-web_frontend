@@ -14,19 +14,21 @@ const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 const sessionsUrl = `${backendUrl}/api/sessions/`;
 
+const coursesUrl = `${backendUrl}/api/courses/`;
+
 const FORM_FIELDS = [
-  { 
-    name: 'course_name', 
-    label: 'Course', 
-    type: 'select', 
+  {
+    name: 'course_id',
+    label: 'Course Name',
+    type: 'select',
     required: true,
-    options: [], // Will be populated with course codes
-    helperText: 'Select the course for this session'
+    helperText: 'Select the course for this reference'
+    // options will be passed dynamically
   },
-  { 
-    name: 'academic_year', 
-    label: 'Academic Year', 
-    type: 'select', 
+  {
+    name: 'academic_year',
+    label: 'Academic Year',
+    type: 'select',
     required: true,
     options: [
       '2024-2025',
@@ -55,19 +57,22 @@ const FORM_FIELDS = [
     options: ['tp', 'td'],
     helperText: 'Select whether this is a TP or TD exam'
   },
-  { 
-    name: 'question_pdf_url', 
-    label: 'Question Paper PDF URL', 
-    type: 'text', 
+  {
+    name: 'question_pdf_url',
+    label: 'Question Paper PDF URL',
+    type: 'file',
     required: true,
-    helperText: 'Enter the URL for the question paper PDF'
+    helperText: 'Upload the PDF for the question paper',
+    accept: '.pdf',
+
   },
-  { 
-    name: 'solution_pdf_url', 
-    label: 'Solution PDF URL', 
-    type: 'text', 
+  {
+    name: 'solution_pdf_url',
+    label: 'Solution PDF URL',
+    type: 'file',
     required: false,
-    helperText: 'Enter the URL for the solution PDF (optional)'
+    helperText: 'Upload the PDF for the solution (optional)',
+    accept: '.pdf',
   },
 ];
 
@@ -90,31 +95,31 @@ export default function Sessions() {
 
   const COLUMNS = [
     { field: 'id', headerName: 'ID', width: 90, sortable: true },
-    { 
-      field: 'course_name',
-      headerName: 'Course',
-      width: 250,
+    {
+      field: 'course_id',
+      headerName: 'Course Name',
+      width: 200,
       sortable: true,
-      renderCell: (row) => (
-        <Typography variant="body2" sx={{ color: 'var(--main-color2)' }}>
-          {row.course_name}
-        </Typography>
-      ),
+      renderCell: (row) => {
+        const course = courses.find(c => c.id === row.course_id);
+        return course ? course.name : '';
+      }
     },
+
     { field: 'academic_year', headerName: 'Academic Year', width: 150, sortable: true },
-    { 
-      field: 'exam_type', 
-      headerName: 'Exam Type', 
-      width: 130, 
+    {
+      field: 'exam_type',
+      headerName: 'Exam Type',
+      width: 130,
       sortable: true,
       renderCell: (row) => (
         <Chip
           label={row.exam_type}
           size="small"
           sx={{
-            backgroundColor: 
+            backgroundColor:
               row.exam_type === 'partial' ? 'rgba(25, 118, 210, 0.1)' : 'rgba(46, 125, 50, 0.1)',
-            color: 
+            color:
               row.exam_type === 'partial' ? '#1976d2' : '#2e7d32',
             fontWeight: 500,
             textTransform: 'capitalize'
@@ -122,19 +127,19 @@ export default function Sessions() {
         />
       ),
     },
-    { 
-      field: 'final_type', 
-      headerName: 'Final Type', 
-      width: 130, 
+    {
+      field: 'final_type',
+      headerName: 'Final Type',
+      width: 130,
       sortable: true,
       renderCell: (row) => (
         <Chip
           label={row.final_type}
           size="small"
           sx={{
-            backgroundColor: 
+            backgroundColor:
               row.final_type === 'tp' ? 'rgba(25, 118, 210, 0.1)' : 'rgba(46, 125, 50, 0.1)',
-            color: 
+            color:
               row.final_type === 'td' ? '#1976d2' : '#2e7d32',
             fontWeight: 500,
             textTransform: 'capitalize'
@@ -142,16 +147,16 @@ export default function Sessions() {
         />
       ),
     },
-    { 
-      field: 'question_pdf_url', 
-      headerName: 'Question Paper', 
+    {
+      field: 'question_pdf_url',
+      headerName: 'Question Paper',
       width: 150,
       sortable: false,
       renderCell: (row) => (
         row.question_pdf_url ? (
-          <Link 
-            href={row.question_pdf_url} 
-            target="_blank" 
+          <Link
+            href={row.question_pdf_url}
+            target="_blank"
             rel="noopener noreferrer"
             sx={{
               display: 'flex',
@@ -179,16 +184,16 @@ export default function Sessions() {
         )
       ),
     },
-    { 
-      field: 'solution_pdf_url', 
-      headerName: 'Solution', 
+    {
+      field: 'solution_pdf_url',
+      headerName: 'Solution',
       width: 150,
       sortable: false,
       renderCell: (row) => (
         row.solution_pdf_url ? (
-          <Link 
-            href={row.solution_pdf_url} 
-            target="_blank" 
+          <Link
+            href={row.solution_pdf_url}
+            target="_blank"
             rel="noopener noreferrer"
             sx={{
               display: 'flex',
@@ -229,25 +234,19 @@ export default function Sessions() {
       )
     }
   ];
-  
+
   const {
     data: coursesData,
     loading: coursesLoading,
     error: coursesError
-  } = useDataFetching('/api/courses');
+  } = useDataFetching(coursesUrl);
 
   useEffect(() => {
     if (coursesData) {
-      // Create options with code as value but name as display text
-      const courseOptions = coursesData.map(course => ({
-        value: course.code,
-        label: course.name
-      }));
-      
-      // Find the course field and update its options
-      const courseField = FORM_FIELDS.find(field => field.name === 'course_code');
+      // Update the course options in FORM_FIELDS with value/label pairs for select
+      const courseField = FORM_FIELDS.find(field => field.name === 'course_id');
       if (courseField) {
-        courseField.options = courseOptions;
+        courseField.options = coursesData.map(course => ({ value: course.id, label: course.name }));
       }
       setCourses(coursesData);
     }
@@ -266,31 +265,34 @@ export default function Sessions() {
     initialData: {},
     onSubmit: (data, mode) => {
       // Validate PDF URLs
-      if (data.question_pdf_url && !data.question_pdf_url.trim().toLowerCase().endsWith('.pdf')) {
-        Toast.error('The Question Paper URL must end with .pdf');
-        return;
+      // if (data.question_pdf_url && !data.question_pdf_url.trim().toLowerCase().endsWith('.pdf')) {
+      //   Toast.error('The Question Paper URL must end with .pdf');
+      //   return;
+      // }
+      // if (data.solution_pdf_url && data.solution_pdf_url.trim() !== '' && !data.solution_pdf_url.trim().toLowerCase().endsWith('.pdf')) {
+      //   Toast.error('The Solution PDF URL must end with .pdf');
+      //   return;
+      // }
+
+
+      // Ensure we never send course_name, only course_id, and never send id in update
+      const cleanedData = { ...data };
+
+      if ('course_name' in cleanedData) delete cleanedData.course_name;
+      //if (mode === 'edit' && 'id' in cleanedData) delete cleanedData.id;
+
+      console.log("data after edit or create :", cleanedData);
+
+      // Add created_by field for create operation
+
+      if (mode === 'create') {
+        cleanedData.created_by = 1; // Replace with actual user ID
       }
-      if (data.solution_pdf_url && data.solution_pdf_url.trim() !== '' && !data.solution_pdf_url.trim().toLowerCase().endsWith('.pdf')) {
-        Toast.error('The Solution PDF URL must end with .pdf');
-        return;
-      }
-      // Only send the courseCode to the backend, not the full course object
-      const submitData = {
-        ...data,
-        course_code: data.course_code
-      };
-      return mode === 'edit' ? handleUpdate(submitData) : handleCreate(submitData);
+
+      return mode === 'edit' ? handleUpdate(cleanedData, sessionsUrl) : handleCreate(cleanedData, sessionsUrl);
     }
   });
 
-  // Enhance the session data with course names
-  const enhancedData = data.map(session => {
-    const course = courses.find(c => c.code === session.course_code);
-    return {
-      ...session,
-      courseName: course ? course.name : 'Unknown Course'
-    };
-  });
 
   // Filter and sort data
   const filteredData = (data || []).filter(row =>
@@ -323,6 +325,31 @@ export default function Sessions() {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
+
+  if (error || coursesError) return (
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        minHeight: '80vh', // Adjust as needed for centering
+        color: 'error.main',
+        textAlign: 'center',
+        p: 3
+      }}
+    >
+      <ErrorOutlineIcon sx={{ fontSize: 60, mb: 2 }} />
+      <Typography variant="h6" component="h2" gutterBottom>
+        Error loading data.
+      </Typography>
+      <Typography variant="body1">
+        Please check your network connection or try again later.
+      </Typography>
+      {error && <Typography variant="caption">Reference Data Error: {error.message || 'Unknown error'}</Typography>}
+      {coursesError && <Typography variant="caption">Course Data Error: {coursesError.message || 'Unknown error'}</Typography>}
+    </Box>
+  );
 
   if (error) return (
     <Box

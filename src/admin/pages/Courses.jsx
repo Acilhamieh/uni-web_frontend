@@ -210,9 +210,20 @@ export default function Courses() {
     initialData: {},
 
     onSubmit: (data, mode) => {
+
+      const prerequisites = data.prequisties.split(',').map(name => ({
+        name: name.trim()
+      }));
+
+      const objectives = data.objective.split(',').map(name => ({
+        name: name.trim()
+      }));
+
       // Always send instructor_id, never instructor_name
       const processedData = {
         ...data,
+        prequisties: prerequisites,
+        objective: objectives,
         created_by: 1,
       };
       // Remove instructor_name if present
