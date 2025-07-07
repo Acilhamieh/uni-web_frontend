@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Button, Typography } from '@mui/material';
+import { toast } from 'react-toastify';
 import AddIcon from '@mui/icons-material/Add';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import DataTable from '../components/DataTable';
@@ -100,32 +101,32 @@ export default function Projects() {
     handleDelete
   } = useDataFetching(projectsUrl);
 
-    const {
-      data: doctorsData,
-      loading: doctorsLoading,
-      error: doctorsError
-    } = useDataFetching(doctorsUrl);
-  
-    useEffect(() => {
-      if (doctorsData) {
-        const supervisorField = FORM_FIELDS.find(field => field.name === 'supervisor_id');
-        if (supervisorField) {
-          supervisorField.options = doctorsData.map(doctor => ({
-            value: doctor.id,
-            label: doctor.full_name
-          }));
-        }
-        setDoctors(doctorsData);
+  const {
+    data: doctorsData,
+    loading: doctorsLoading,
+    error: doctorsError
+  } = useDataFetching(doctorsUrl);
+
+  useEffect(() => {
+    if (doctorsData) {
+      const supervisorField = FORM_FIELDS.find(field => field.name === 'supervisor_id');
+      if (supervisorField) {
+        supervisorField.options = doctorsData.map(doctor => ({
+          value: doctor.id,
+          label: doctor.full_name
+        }));
       }
-    }, [doctorsData]);
+      setDoctors(doctorsData);
+    }
+  }, [doctorsData]);
 
   const COLUMNS = [
     { field: 'id', headerName: 'ID', width: 90, sortable: true },
     { field: 'title', headerName: 'Title', width: 300, sortable: true },
-    { 
-      field: 'supervisor_id', 
-      headerName: 'Supervisor', 
-      width: 180, 
+    {
+      field: 'supervisor_id',
+      headerName: 'Supervisor',
+      width: 180,
       sortable: true,
       renderCell: (row) => {
         const doctor = doctors.find(d => d.id === row.supervisor_id);
@@ -169,9 +170,10 @@ export default function Projects() {
   } = useFormHandling({
     initialData: {},
     onSubmit: async (data, mode) => {
+      
       // Validate file sizes (max 10MB)
       const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB in bytes
-      
+
       if (data.reportPdf && data.reportPdf.size > MAX_FILE_SIZE) {
         throw new Error('Project report file size must be less than 10MB');
       }
@@ -181,21 +183,21 @@ export default function Projects() {
 
       // Create FormData object to handle file uploads
       const formData = new FormData();
-      
+
       // Add basic project data
       formData.append('title', data.title);
       formData.append('supervisor_id', data.supervisor_id); // This should be the doctor's ID
       formData.append('academic_year', data.academic_year);
       formData.append('description', data.description);
-      
+
       // Add team members as JSON string
       const team = data.team_members.split(',').map(name => ({
         name: name.trim()
       }));
 
-      
-      formData.append('team_members', team);
-      
+
+      formData.append('team_members', JSON.stringify(team));
+
       // Add files if they exist
       if (data.report_url_pdf) {
         formData.append('report_url_pdf', data.report_url_pdf);
@@ -204,130 +206,130 @@ export default function Projects() {
         formData.append('presentation_url_pdf', data.presentation_url_pdf);
       }
 
-      // Send the FormData to the server
-      return mode === 'edit' ? handleUpdate(formData, projectsUrl) : handleCreate(formData, projectsUrl);
-    }
+    // Send the FormData to the server
+    return mode === 'edit' ? handleUpdate(formData, projectsUrl) : handleCreate(formData, projectsUrl);
+  }
   });
 
-  // Function to handle opening the edit form with pre-processed data
-  const handleEditOpen = (row) => {
-    handleOpen('edit', {
-      ...row,
-      supervisor: row.supervisor // Ensure the supervisor ID is passed correctly
-    });
-  };
-
-  // Filter and sort data
-  const filteredData = (data || []).filter(row =>
-    Object.values(row).some(value =>
-      String(value).toLowerCase().includes(searchText.toLowerCase())
-    )
-  );
-
-  const sortedData = [...filteredData].sort((a, b) => {
-    if (sortDirection === 'asc') {
-      return a[sortBy] > b[sortBy] ? 1 : -1;
-    }
-    return a[sortBy] < b[sortBy] ? 1 : -1;
+// Function to handle opening the edit form with pre-processed data
+const handleEditOpen = (row) => {
+  handleOpen('edit', {
+    ...row,
+    supervisor: row.supervisor // Ensure the supervisor ID is passed correctly
   });
+};
 
-  const handleSort = (field) => {
-    if (sortBy === field) {
-      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
-    } else {
-      setSortBy(field);
-      setSortDirection('asc');
-    }
-  };
+// Filter and sort data
+const filteredData = (data || []).filter(row =>
+  Object.values(row).some(value =>
+    String(value).toLowerCase().includes(searchText.toLowerCase())
+  )
+);
 
-  const handlePageChange = (event, newPage) => {
-    setPage(newPage);
-  };
+const sortedData = [...filteredData].sort((a, b) => {
+  if (sortDirection === 'asc') {
+    return a[sortBy] > b[sortBy] ? 1 : -1;
+  }
+  return a[sortBy] < b[sortBy] ? 1 : -1;
+});
 
-  const handleRowsPerPageChange = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
+const handleSort = (field) => {
+  if (sortBy === field) {
+    setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+  } else {
+    setSortBy(field);
+    setSortDirection('asc');
+  }
+};
 
-  if (error || doctorsError) return (
-    <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        minHeight: '80vh', // Adjust as needed for centering
-        color: 'error.main',
-        textAlign: 'center',
-        p: 3
-      }}
-    >
-      <ErrorOutlineIcon sx={{ fontSize: 60, mb: 2 }} />
-      <Typography variant="h6" component="h2" gutterBottom>
-        Error loading data.
-      </Typography>
-      <Typography variant="body1">
-        Please check your network connection or try again later.
-      </Typography>
-      {error && <Typography variant="caption">Project Data Error: {error.message || 'Unknown error'}</Typography>}
-      {doctorsError && <Typography variant="caption">Doctor Data Error: {doctorsError.message || 'Unknown error'}</Typography>}
-    </Box>
-  );
+const handlePageChange = (event, newPage) => {
+  setPage(newPage);
+};
 
-  return (
-    <Box sx={{ p: 3 }}>
-      <Box sx={{ mb: 3 }}>
-        <Button
-          variant="contained"
-          startIcon={<AddIcon />}
-          onClick={() => handleOpen('add')}
-          sx={{
+const handleRowsPerPageChange = (event) => {
+  setRowsPerPage(parseInt(event.target.value, 10));
+  setPage(0);
+};
+
+if (error || doctorsError) return (
+  <Box
+    sx={{
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+      minHeight: '80vh', // Adjust as needed for centering
+      color: 'error.main',
+      textAlign: 'center',
+      p: 3
+    }}
+  >
+    <ErrorOutlineIcon sx={{ fontSize: 60, mb: 2 }} />
+    <Typography variant="h6" component="h2" gutterBottom>
+      Error loading data.
+    </Typography>
+    <Typography variant="body1">
+      Please check your network connection or try again later.
+    </Typography>
+    {error && <Typography variant="caption">Project Data Error: {error.message || 'Unknown error'}</Typography>}
+    {doctorsError && <Typography variant="caption">Doctor Data Error: {doctorsError.message || 'Unknown error'}</Typography>}
+  </Box>
+);
+
+return (
+  <Box sx={{ p: 3 }}>
+    <Box sx={{ mb: 3 }}>
+      <Button
+        variant="contained"
+        startIcon={<AddIcon />}
+        onClick={() => handleOpen('add')}
+        sx={{
+          backgroundColor: 'var(--main-color2)',
+          borderRadius: '8px',
+          textTransform: 'none',
+          '&:hover': {
             backgroundColor: 'var(--main-color2)',
-            borderRadius: '8px',
-            textTransform: 'none',
-            '&:hover': {
-              backgroundColor: 'var(--main-color2)',
-              opacity: 0.9,
-            },
-          }}
-        >
-          Add Project
-        </Button>
-      </Box>
-      <DataTable
-        title="Projects"
-        rows={sortedData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)} //pagination
-        columns={COLUMNS}
-        loading={loading || doctorsLoading}
-        page={page}
-        rowsPerPage={rowsPerPage}
-        onPageChange={handlePageChange}
-        onRowsPerPageChange={handleRowsPerPageChange}
-        totalRows={filteredData.length}
-        searchText={searchText}
-        onSearch={setSearchText}
-        sortBy={sortBy}
-        sortDirection={sortDirection}
-        onSort={handleSort}
-      />
-      <FormDialog
-        open={open}
-        title={editMode ? 'Edit Project' : 'Add Project'}
-        onClose={() => {
-          handleClose();
-          resetForm();
+            opacity: 0.9,
+          },
         }}
-        onSubmit={handleSubmit}
       >
-        {FORM_FIELDS.map((field) => (
-          <FormField
-            key={field.name}
-            {...field}
-            value={formData[field.name]}
-            onChange={handleChange}
-          />
-        ))}
-      </FormDialog>
+        Add Project
+      </Button>
     </Box>
-  );
+    <DataTable
+      title="Projects"
+      rows={sortedData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)} //pagination
+      columns={COLUMNS}
+      loading={loading || doctorsLoading}
+      page={page}
+      rowsPerPage={rowsPerPage}
+      onPageChange={handlePageChange}
+      onRowsPerPageChange={handleRowsPerPageChange}
+      totalRows={filteredData.length}
+      searchText={searchText}
+      onSearch={setSearchText}
+      sortBy={sortBy}
+      sortDirection={sortDirection}
+      onSort={handleSort}
+    />
+    <FormDialog
+      open={open}
+      title={editMode ? 'Edit Project' : 'Add Project'}
+      onClose={() => {
+        handleClose();
+        resetForm();
+      }}
+      onSubmit={handleSubmit}
+    >
+      {FORM_FIELDS.map((field) => (
+        <FormField
+          key={field.name}
+          {...field}
+          value={formData[field.name]}
+          onChange={handleChange}
+        />
+      ))}
+    </FormDialog>
+  </Box>
+);
 }
