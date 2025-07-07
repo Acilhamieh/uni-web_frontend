@@ -264,32 +264,31 @@ export default function Sessions() {
   } = useFormHandling({
     initialData: {},
     onSubmit: (data, mode) => {
-      // Validate PDF URLs
-      // if (data.question_pdf_url && !data.question_pdf_url.trim().toLowerCase().endsWith('.pdf')) {
-      //   Toast.error('The Question Paper URL must end with .pdf');
-      //   return;
-      // }
-      // if (data.solution_pdf_url && data.solution_pdf_url.trim() !== '' && !data.solution_pdf_url.trim().toLowerCase().endsWith('.pdf')) {
-      //   Toast.error('The Solution PDF URL must end with .pdf');
-      //   return;
-      // }
-
-
-      // Ensure we never send course_name, only course_id, and never send id in update
+      // Remove course_name if present
       const cleanedData = { ...data };
-
       if ('course_name' in cleanedData) delete cleanedData.course_name;
-      //if (mode === 'edit' && 'id' in cleanedData) delete cleanedData.id;
 
-      console.log("data after edit or create :", cleanedData);
-
-      // Add created_by field for create operation
-
-      if (mode === 'create') {
-        cleanedData.created_by = 1; // Replace with actual user ID
+      // Build FormData for all fields with correct keys for files
+      const formDataObj = new FormData();
+      formDataObj.append('course_id', cleanedData.course_id);
+      formDataObj.append('academic_year', cleanedData.academic_year);
+      formDataObj.append('exam_type', cleanedData.exam_type);
+      formDataObj.append('final_type', cleanedData.final_type);
+      if (cleanedData.question_pdf_url instanceof File) {
+        formDataObj.append('question_pdf', cleanedData.question_pdf_url);
       }
-
-      return mode === 'edit' ? handleUpdate(cleanedData, sessionsUrl) : handleCreate(cleanedData, sessionsUrl);
+      if (cleanedData.solution_pdf_url instanceof File) {
+        formDataObj.append('solution_pdf', cleanedData.solution_pdf_url);
+      }
+      if (mode === 'edit' && data.id) {
+        formDataObj.append('id', data.id);
+      }
+      if (mode !== 'edit') {
+        formDataObj.append('created_by', 1); // or actual user ID
+      }
+      return mode === 'edit'
+        ? handleUpdate(formDataObj, sessionsUrl)
+        : handleCreate(formDataObj, sessionsUrl);
     }
   });
 

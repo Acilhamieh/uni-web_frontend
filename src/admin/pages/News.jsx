@@ -137,35 +137,25 @@ export default function News() {
     initialData: {},
     onSubmit: async (data, mode) => {
       const processedData = { ...data, created_by: 1 };
-      // Handle file upload
-      if (data.image && data.image instanceof File) {
-        const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
-        if (!allowedTypes.includes(data.image.type)) {
-          alert('Only .jpeg, .jpg, and .png files are allowed.');
-          return;
-        }
-        const formDataObj = new FormData();
-        Object.entries(processedData).forEach(([key, value]) => {
-          if (key === 'image') {
-            formDataObj.append('image', value);
-          } else {
-            formDataObj.append(key, value);
+      const formDataObj = new FormData();
+      Object.entries(processedData).forEach(([key, value]) => {
+        if (key === 'image' && value instanceof File) {
+          const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+          if (!allowedTypes.includes(value.type)) {
+            alert('Only .jpeg, .jpg, and .png files are allowed.');
+            return;
           }
-        });
-        if (mode === 'edit' && data.id) {
-          formDataObj.append('id', data.id);
+          formDataObj.append('image', value);
+        } else {
+          formDataObj.append(key, value);
         }
-        return mode === 'edit'
-          ? handleUpdate(formDataObj, newsUrl, true)
-          : handleCreate(formDataObj, newsUrl, true);
-      } else {
-        if (mode === 'edit' && data.id) {
-          processedData.id = data.id;
-        }
-        return mode === 'edit'
-          ? handleUpdate(processedData, newsUrl)
-          : handleCreate(processedData, newsUrl);
+      });
+      if (mode === 'edit' && data.id) {
+        formDataObj.append('id', data.id);
       }
+      return mode === 'edit'
+        ? handleUpdate(formDataObj, newsUrl)
+        : handleCreate(formDataObj, newsUrl);
     }
   });
 

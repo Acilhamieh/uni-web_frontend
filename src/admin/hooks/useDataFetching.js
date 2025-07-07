@@ -45,12 +45,13 @@ export const useDataFetching = (endpoint) => {
       // Simulate API delay
       await new Promise(resolve => setTimeout(resolve, 1000));
 
+      const isFormData = newData instanceof FormData;
       const response = await fetch(endpoint, {
         method: 'POST',
-        headers: {
+        headers: isFormData ? undefined : {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(newData),
+        body: isFormData ? newData : JSON.stringify(newData),
       });
 
       const result = await response.json();
@@ -75,18 +76,19 @@ export const useDataFetching = (endpoint) => {
     try {
       await new Promise(resolve => setTimeout(resolve, 1000)); // simulate delay
   
-      const response = await fetch(`${endpoint}${updatedData.id}`, {
+      const isFormData = updatedData instanceof FormData;
+      const response = await fetch(`${endpoint}${isFormData ? updatedData.get('id') : updatedData.id}`, {
         method: 'PUT', 
-        headers: {
+        headers: isFormData ? undefined : {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(updatedData),
+        body: isFormData ? updatedData : JSON.stringify(updatedData),
       });
   
       const result = await response.json();
   
       if(result.success){
-        setData(data.map(item => item.id === updatedData.id ? result.data : item));
+        setData(data.map(item => item.id === (isFormData ? updatedData.get('id') : updatedData.id) ? result.data : item));
         toast.success(result.message);
       }
       else{

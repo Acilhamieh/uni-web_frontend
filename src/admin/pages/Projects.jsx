@@ -170,14 +170,14 @@ export default function Projects() {
   } = useFormHandling({
     initialData: {},
     onSubmit: async (data, mode) => {
-      
       // Validate file sizes (max 10MB)
       const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB in bytes
 
-      if (data.reportPdf && data.reportPdf.size > MAX_FILE_SIZE) {
+      // Consistent file field names
+      if (data.report_url_pdf && data.report_url_pdf.size > MAX_FILE_SIZE) {
         throw new Error('Project report file size must be less than 10MB');
       }
-      if (data.presentationPdf && data.presentationPdf.size > MAX_FILE_SIZE) {
+      if (data.presentation_url_pdf && data.presentation_url_pdf.size > MAX_FILE_SIZE) {
         throw new Error('Project presentation file size must be less than 10MB');
       }
 
@@ -190,146 +190,147 @@ export default function Projects() {
       formData.append('academic_year', data.academic_year);
       formData.append('description', data.description);
 
-      // Add team members as JSON string
-      const team = data.team_members.split(',').map(name => ({
-        name: name.trim()
-      }));
-
-
+      // Add team members as JSON string (array of strings, not objects)
+      const team = data.team_members.split(',').map(name => name.trim());
       formData.append('team_members', JSON.stringify(team));
 
-      // Add files if they exist
+      // Only append files if they exist (important for edit mode)
       if (data.report_url_pdf) {
-        formData.append('report_url_pdf', data.report_url_pdf);
+        formData.append('report_pdf', data.report_url_pdf);
       }
       if (data.presentation_url_pdf) {
-        formData.append('presentation_url_pdf', data.presentation_url_pdf);
+        formData.append('presentation_pdf', data.presentation_url_pdf);
       }
 
-    // Send the FormData to the server
-    return mode === 'edit' ? handleUpdate(formData, projectsUrl) : handleCreate(formData, projectsUrl);
-  }
+      // For edit mode, ensure the project ID is included
+      if (mode === 'edit' && data.id) {
+        formData.append('id', data.id);
+      }
+
+      // Send the FormData to the server
+      return mode === 'edit' ? handleUpdate(formData, projectsUrl) : handleCreate(formData, projectsUrl);
+    }
   });
 
-// Function to handle opening the edit form with pre-processed data
-const handleEditOpen = (row) => {
-  handleOpen('edit', {
-    ...row,
-    supervisor: row.supervisor // Ensure the supervisor ID is passed correctly
+  // Function to handle opening the edit form with pre-processed data
+  const handleEditOpen = (row) => {
+    handleOpen('edit', {
+      ...row,
+      supervisor: row.supervisor // Ensure the supervisor ID is passed correctly
+    });
+  };
+
+  // Filter and sort data
+  const filteredData = (data || []).filter(row =>
+    Object.values(row).some(value =>
+      String(value).toLowerCase().includes(searchText.toLowerCase())
+    )
+  );
+
+  const sortedData = [...filteredData].sort((a, b) => {
+    if (sortDirection === 'asc') {
+      return a[sortBy] > b[sortBy] ? 1 : -1;
+    }
+    return a[sortBy] < b[sortBy] ? 1 : -1;
   });
-};
 
-// Filter and sort data
-const filteredData = (data || []).filter(row =>
-  Object.values(row).some(value =>
-    String(value).toLowerCase().includes(searchText.toLowerCase())
-  )
-);
+  const handleSort = (field) => {
+    if (sortBy === field) {
+      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortBy(field);
+      setSortDirection('asc');
+    }
+  };
 
-const sortedData = [...filteredData].sort((a, b) => {
-  if (sortDirection === 'asc') {
-    return a[sortBy] > b[sortBy] ? 1 : -1;
-  }
-  return a[sortBy] < b[sortBy] ? 1 : -1;
-});
+  const handlePageChange = (event, newPage) => {
+    setPage(newPage);
+  };
 
-const handleSort = (field) => {
-  if (sortBy === field) {
-    setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
-  } else {
-    setSortBy(field);
-    setSortDirection('asc');
-  }
-};
+  const handleRowsPerPageChange = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
 
-const handlePageChange = (event, newPage) => {
-  setPage(newPage);
-};
-
-const handleRowsPerPageChange = (event) => {
-  setRowsPerPage(parseInt(event.target.value, 10));
-  setPage(0);
-};
-
-if (error || doctorsError) return (
-  <Box
-    sx={{
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'center',
-      alignItems: 'center',
-      minHeight: '80vh', // Adjust as needed for centering
-      color: 'error.main',
-      textAlign: 'center',
-      p: 3
-    }}
-  >
-    <ErrorOutlineIcon sx={{ fontSize: 60, mb: 2 }} />
-    <Typography variant="h6" component="h2" gutterBottom>
-      Error loading data.
-    </Typography>
-    <Typography variant="body1">
-      Please check your network connection or try again later.
-    </Typography>
-    {error && <Typography variant="caption">Project Data Error: {error.message || 'Unknown error'}</Typography>}
-    {doctorsError && <Typography variant="caption">Doctor Data Error: {doctorsError.message || 'Unknown error'}</Typography>}
-  </Box>
-);
-
-return (
-  <Box sx={{ p: 3 }}>
-    <Box sx={{ mb: 3 }}>
-      <Button
-        variant="contained"
-        startIcon={<AddIcon />}
-        onClick={() => handleOpen('add')}
-        sx={{
-          backgroundColor: 'var(--main-color2)',
-          borderRadius: '8px',
-          textTransform: 'none',
-          '&:hover': {
-            backgroundColor: 'var(--main-color2)',
-            opacity: 0.9,
-          },
-        }}
-      >
-        Add Project
-      </Button>
-    </Box>
-    <DataTable
-      title="Projects"
-      rows={sortedData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)} //pagination
-      columns={COLUMNS}
-      loading={loading || doctorsLoading}
-      page={page}
-      rowsPerPage={rowsPerPage}
-      onPageChange={handlePageChange}
-      onRowsPerPageChange={handleRowsPerPageChange}
-      totalRows={filteredData.length}
-      searchText={searchText}
-      onSearch={setSearchText}
-      sortBy={sortBy}
-      sortDirection={sortDirection}
-      onSort={handleSort}
-    />
-    <FormDialog
-      open={open}
-      title={editMode ? 'Edit Project' : 'Add Project'}
-      onClose={() => {
-        handleClose();
-        resetForm();
+  if (error || doctorsError) return (
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        minHeight: '80vh', // Adjust as needed for centering
+        color: 'error.main',
+        textAlign: 'center',
+        p: 3
       }}
-      onSubmit={handleSubmit}
     >
-      {FORM_FIELDS.map((field) => (
-        <FormField
-          key={field.name}
-          {...field}
-          value={formData[field.name]}
-          onChange={handleChange}
-        />
-      ))}
-    </FormDialog>
-  </Box>
-);
+      <ErrorOutlineIcon sx={{ fontSize: 60, mb: 2 }} />
+      <Typography variant="h6" component="h2" gutterBottom>
+        Error loading data.
+      </Typography>
+      <Typography variant="body1">
+        Please check your network connection or try again later.
+      </Typography>
+      {error && <Typography variant="caption">Project Data Error: {error.message || 'Unknown error'}</Typography>}
+      {doctorsError && <Typography variant="caption">Doctor Data Error: {doctorsError.message || 'Unknown error'}</Typography>}
+    </Box>
+  );
+
+  return (
+    <Box sx={{ p: 3 }}>
+      <Box sx={{ mb: 3 }}>
+        <Button
+          variant="contained"
+          startIcon={<AddIcon />}
+          onClick={() => handleOpen('add')}
+          sx={{
+            backgroundColor: 'var(--main-color2)',
+            borderRadius: '8px',
+            textTransform: 'none',
+            '&:hover': {
+              backgroundColor: 'var(--main-color2)',
+              opacity: 0.9,
+            },
+          }}
+        >
+          Add Project
+        </Button>
+      </Box>
+      <DataTable
+        title="Projects"
+        rows={sortedData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)} //pagination
+        columns={COLUMNS}
+        loading={loading || doctorsLoading}
+        page={page}
+        rowsPerPage={rowsPerPage}
+        onPageChange={handlePageChange}
+        onRowsPerPageChange={handleRowsPerPageChange}
+        totalRows={filteredData.length}
+        searchText={searchText}
+        onSearch={setSearchText}
+        sortBy={sortBy}
+        sortDirection={sortDirection}
+        onSort={handleSort}
+      />
+      <FormDialog
+        open={open}
+        title={editMode ? 'Edit Project' : 'Add Project'}
+        onClose={() => {
+          handleClose();
+          resetForm();
+        }}
+        onSubmit={handleSubmit}
+      >
+        {FORM_FIELDS.map((field) => (
+          <FormField
+            key={field.name}
+            {...field}
+            value={formData[field.name]}
+            onChange={handleChange}
+          />
+        ))}
+      </FormDialog>
+    </Box>
+  );
 }
