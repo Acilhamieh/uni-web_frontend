@@ -1,92 +1,153 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import AnnouncementIcon from '@mui/icons-material/Announcement';
-import EventIcon from '@mui/icons-material/Event';
-import NewspaperIcon from '@mui/icons-material/Newspaper';
-import CircularProgress from '@mui/material/CircularProgress';
+import { useState, useEffect } from 'react';
+import { toast } from 'react-toastify';
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import ImageIcon from '@mui/icons-material/Image';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import '../styles/News.css';
 
-const backendUrl = import.meta.env.VITE_BACKEND_URL;
-
-const newsUrl = `${backendUrl}/api/news/`;
-
-const NEWS_TYPES = {
-  announcement: { label: 'Announcement', icon: <AnnouncementIcon />, color: '#f44336' },
-  event: { label: 'Event', icon: <EventIcon />, color: '#4caf50' },
-  news: { label: 'News', icon: <NewspaperIcon />, color: '#2196f3' },
-};
-
 export default function News() {
-  const [news, setNews] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
-  const navigate = useNavigate();
+    const [news, setNews] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [selectedType, setSelectedType] = useState('all');
+    const [searchTerm, setSearchTerm] = useState('');
+    
 
-  useEffect(() => {
-    fetch(newsUrl)
-      .then(res => res.json())
-      .then(res => {
-        setNews(res.data || []);
-        setLoading(false);
-      })
-      .catch(() => {
-        setError('Failed to load news.');
-        setLoading(false);
-      });
-  }, []);
+    // Get type color based on news type
+    const getTypeColor = (type) => {
+        switch(type.toLowerCase()) {
+            case 'academic':
+                return 'var(--main-color2)'; // blue
+            case 'event':
+                return 'var(--main-color5)'; // green
+            case 'announcement':
+                return 'var(--main-color4)'; // orange
+            case 'workshop':
+                return 'var(--main-color3)'; // purple
+            default:
+                return 'var(--main-color1)'; // default blue
+        }
+    };
 
-  if (loading) {
-    return (
-      <div className="news-loading">
-        <CircularProgress />
-      </div>
-    );
-  }
+    useEffect(() => {
+        fetchNews();
+    }, []);
 
-  if (error) {
-    return (
-      <div className="news-error">
-        {error}
-      </div>
-    );
-  }
+    const fetchNews = async () => {
+        try {
+            const response = await fetch('http://localhost:4000/api/news');
+            const result = await response.json();
+            
+            if (result.success) {
+                setNews(result.data);
+            } else {
+                toast.error('Failed to fetch news');
+            }
+        } catch (error) {
+            console.error('Error fetching news:', error);
+            toast.error('Error loading news');
+        } finally {
+            setLoading(false);
+        }
+    };
 
-  return (
-    <div className="news-container">
-      {news.length === 0 && <div className="news-empty">No news available.</div>}
-      {news.map(item => {
-        const typeInfo = NEWS_TYPES[item.type] || NEWS_TYPES.news;
+    const formatDate = (dateString) => {
+        return new Date(dateString).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+    };
+
+    const handleImageClick = (imageUrl) => {
+        if (imageUrl) {
+            window.open(imageUrl, '_blank');
+        }
+    };
+
+    const filteredNews = news.filter(item => {
+        const matchesType = selectedType === 'all' || item.type === selectedType;
+        const matchesSearch = item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                            item.content.toLowerCase().includes(searchTerm.toLowerCase());
+        return matchesType && matchesSearch;
+    });
+
+    if (loading) {
         return (
-          <div className="news-card" key={item.id}>
-            <div className="news-card-header">
-              <div className="news-type">
-                <span className="news-type-icon" style={{ color: typeInfo.color }}>
-                  {typeInfo.icon}
-                </span>
-                <span className="news-type-label" style={{ color: typeInfo.color }}>
-                  {typeInfo.label}
-                </span>
-              </div>
-              <div className="news-date">
-                {new Date(item.date).toLocaleDateString('en-GB', {
-                  year: 'numeric',
-                  month: 'short',
-                  day: 'numeric'
-                })}
-              </div>
+            <div className="news-loading">
+                <div className="loading-spinner"></div>
+                <p>Loading news & events...</p>
             </div>
-            <div className="news-title">
-              {item.title}
-            </div>
-            <button
-              className="news-view-btn"
-              onClick={() => navigate(`/news/${item.id}`)}
-            >
-              View Details
-            </button>
-          </div>
         );
-      })}
-    </div>
-  );
+    }
+
+    // Get unique types from news data
+    const newsTypes = ['all', ...new Set(news.map(item => item.type))];
+
+    return (
+        <div className="news-container">
+            <h1 className="section-title">News & Events</h1>
+
+            <div className="news-filters">
+                
+
+                <div className="filter-box">
+                    <select
+                        value={selectedType}
+                        onChange={(e) => setSelectedType(e.target.value)}
+                    >
+                        {newsTypes.map(type => (
+                            <option key={type} value={type}>
+                                {type === 'all' ? 'All Types' : type.charAt(0).toUpperCase() + type.slice(1)}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+            </div>
+
+            <div className="news-grid">
+                {filteredNews.map((item) => (
+                    <article key={item.id} className="news-card">
+                        <div className="news-card-content">
+                            <div className="news-meta">
+                                <div className="meta-item">
+                                    <CalendarTodayIcon className="meta-icon" />
+                                    <span>{formatDate(item.created_at)}</span>
+                                </div>
+                                <div 
+                                    className="news-type-badge"
+                                    style={{ backgroundColor: getTypeColor(item.type) }}
+                                >
+                                    {item.type.charAt(0).toUpperCase() + item.type.slice(1)}
+                                </div>
+                            </div>
+
+                            <h2 className="news-card-title">{item.title}</h2>
+                            
+                            {item.image_url && (
+                                <div 
+                                    className="image-view-link"
+                                    onClick={() => handleImageClick(item.image_url)}
+                                >
+                                    <ImageIcon className="image-icon" />
+                                    <span>View Image</span>
+                                </div>
+                            )}
+
+                            <p className="news-card-excerpt">
+                                {item.content}
+                            </p>
+
+                            
+                        </div>
+                    </article>
+                ))}
+            </div>
+
+            {filteredNews.length === 0 && (
+                <div className="no-news">
+                    <p>No news or events available for the selected criteria.</p>
+                </div>
+            )}
+        </div>
+    );
 }

@@ -149,7 +149,7 @@ export default function FormHandler(props) {
             isValide = false;
 
         } else {
-            //const patternPass = '/^(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/';
+            //const patternPass = '/^(?=.[0-9])(?=.[!@#$%^&])[A-Za-z\d!@#$%^&]{8,}$/';
             if (data.password.length < 8) {
                 setErrors(prevErrors => (
                     {
@@ -254,9 +254,9 @@ export default function FormHandler(props) {
                                     value={data.firstName}
                                     onChange={handleChange}
                                 />
-
-                                <span className="error-message">{errors.firstName}</span>
+                                {errors.firstName && <span className="error-message">{errors.firstName}</span>}
                             </label>
+
                             <label className="input-container">
                                 Last Name
                                 <input
@@ -267,13 +267,12 @@ export default function FormHandler(props) {
                                     value={data.lastName}
                                     onChange={handleChange}
                                 />
-
-                                <span className="error-message">{errors.lastName}</span>
-
+                                {errors.lastName && <span className="error-message">{errors.lastName}</span>}
                             </label>
                         </>
                     )
                 }
+
                 <label className="input-container">
                     Email
                     <input
@@ -285,8 +284,9 @@ export default function FormHandler(props) {
                         onChange={handleChange}
                         placeholder="e.g. john.doe@gmail.com"
                     />
-                    <span className="error-message">{errors.email}</span>
+                    {errors.email && <span className="error-message">{errors.email}</span>}
                 </label>
+
                 <label className="input-container">
                     Password
                     <input
@@ -297,9 +297,9 @@ export default function FormHandler(props) {
                         value={data.password}
                         onChange={handleChange}
                     />
-                    <span className="error-message">{errors.password}</span>
-
+                    {errors.password && <span className="error-message">{errors.password}</span>}
                 </label>
+
                 <label className="custom-checkbox">
                     <div>
                         <input
@@ -309,12 +309,12 @@ export default function FormHandler(props) {
                             checked={isChecked}
                             onChange={handleToogle}
                         />
-
                         <span className="checkmark" />
-                        {props.register ? `Remember me` : <>I agree the<a href="#">Terms & Conditions</a></>}
+                        {props.register ? "Remember me" : <>I agree the<a href="#">Terms & Conditions</a></>}
                     </div>
-                    <span className="error-message">{errors.checkbox}</span>
+                    {errors.checkbox && <span className="error-message">{errors.checkbox}</span>}
                 </label>
+
                 <button type="submit" className="form-btn" disabled={isLoading}>
                     {isLoading ? (
                         <div className="button-loading">
@@ -322,7 +322,7 @@ export default function FormHandler(props) {
                             <span>Loading...</span>
                         </div>
                     ) : (
-                        props.register ? `Log in` : `Sign up`
+                        props.register ? "Log in" : "Sign up"
                     )}
                 </button>
             </form>

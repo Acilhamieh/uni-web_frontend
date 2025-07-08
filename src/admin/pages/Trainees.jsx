@@ -51,6 +51,78 @@ const FORM_FIELDS = [
   { name: 'notes', label: 'Notes', type: 'text', multiline: true, rows: 2, required: false ,helperText: 'Enter any additional notes or comments separated by commas' },
 ];
 
+const TraineeCard = ({ trainee }) => {
+    const [skillsExpanded, setSkillsExpanded] = useState(false);
+    const [objectivesExpanded, setObjectivesExpanded] = useState(false);
+
+    return (
+        <div className="trainee-card">
+            <div className="trainee-card-content">
+                <span className="program-badge">{trainee.program}</span>
+                <div className="trainee-header">
+                    <div className="trainee-avatar-container">
+                        <Person className="trainee-avatar" />
+                    </div>
+                    <div className="trainee-main-info">
+                        <h2 className="trainee-title">{trainee.name}</h2>
+                        <div className="trainee-contact">
+                            <span>{trainee.email}</span>
+                            <span>{trainee.phone}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="trainee-details">
+                    <div className="info-row">
+                        <Business className="info-icon" />
+                        <span>{trainee.institution}</span>
+                    </div>
+                    <div className="info-row">
+                        <SchoolIcon className="info-icon" />
+                        <span>{trainee.domain}</span>
+                    </div>
+                    <div className="info-row">
+                        <LocationOn className="info-icon" />
+                        <span>{trainee.location}</span>
+                    </div>
+                </div>
+
+                <div className={`trainee-skills ${skillsExpanded ? 'expanded' : ''}`}>
+                    <div 
+                        className="section-toggle"
+                        onClick={() => setSkillsExpanded(!skillsExpanded)}
+                    >
+                        <h3>Skills</h3>
+                        <KeyboardArrowDown className="toggle-arrow" />
+                    </div>
+                    <div className="skills-container">
+                        {trainee.skills.map((skill, index) => (
+                            <span key={index} className="skill-badge">
+                                {skill}
+                            </span>
+                        ))}
+                    </div>
+                </div>
+
+                <div className={`trainee-objectives ${objectivesExpanded ? 'expanded' : ''}`}>
+                    <div 
+                        className="section-toggle"
+                        onClick={() => setObjectivesExpanded(!objectivesExpanded)}
+                    >
+                        <h3>Objectives</h3>
+                        <KeyboardArrowDown className="toggle-arrow" />
+                    </div>
+                    <ul>
+                        {trainee.objectives.map((objective, index) => (
+                            <li key={index}>{objective}</li>
+                        ))}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    );
+};
+
 export default function Trainees() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);

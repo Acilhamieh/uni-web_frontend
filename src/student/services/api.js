@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = process.env.VITE_BACKEND_URLL || 'http://localhost:4001/api';
+const BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:4000/api';
 
 // Create axios instance with default config
 const api = axios.create({
@@ -61,7 +61,7 @@ api.interceptors.response.use(
 // Auth endpoints
 export const auth = {
   login: (credentials) => api.post('/auth/login', credentials),
-  signup: (userData) => api.post('/auth/signup', userData),
+  signup: (userData) => api.post('/auth/register', userData),
   logout: () => {
     localStorage.removeItem('token');
     return Promise.resolve();
@@ -79,8 +79,9 @@ export const users = {
 
 // Courses endpoints
 export const courses = {
-  getAll: (params) => api.get('/courses', { params }),
-  getById: (id) => api.get(`/courses/${id}`),
+  getAll: () => axios.get(`${BASE_URL}/courses`),
+  getById: (id) => axios.get(`${BASE_URL}/courses/${id}`),
+  getReferences: (courseId) => api.get(`/references/${courseId}`),
   create: (data) => api.post('/courses', data),
   update: (id, data) => api.put(`/courses/${id}`, data),
   delete: (id) => api.delete(`/courses/${id}`),

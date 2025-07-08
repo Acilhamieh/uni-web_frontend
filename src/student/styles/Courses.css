@@ -1,0 +1,339 @@
+/* Student Courses Page Styles */
+
+.student-courses-container {
+  min-height: 100vh;
+  padding: 3rem 1rem;
+  background: linear-gradient(135deg, var(--main-color6) 0%, rgba(90, 194, 241, 0.1) 100%);
+}
+
+.courses-table-wrapper {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  background: var(--main-color6);
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(13, 92, 145, 0.08);
+  overflow: hidden;
+}
+
+.courses-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: var(--main-color6);
+  margin: 0 auto;
+}
+
+.courses-table th {
+  background: var(--main-color6);
+  padding: 16px 24px;
+  color: var(--main-color2);
+  font-weight: 700;
+  text-align: left;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid var(--main-color2);
+  white-space: nowrap;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.courses-table td {
+  padding: 16px 24px;
+  color: var(--main-color8);
+  font-size: 1rem;
+  border-bottom: 1px solid rgba(13, 92, 145, 0.08);
+  white-space: nowrap;
+  transition: all 0.3s ease;
+}
+
+.courses-table tbody tr {
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.courses-table tbody tr:hover {
+  background: linear-gradient(to right, rgba(90, 194, 241, 0.05), rgba(90, 194, 241, 0.02));
+  transform: translateX(4px);
+}
+
+.courses-table tbody tr:hover td {
+  color: var(--main-color2);
+}
+
+.courses-table tbody tr:hover td:first-child {
+  position: relative;
+}
+
+.courses-table tbody tr:hover td:first-child::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 4px;
+  background: var(--main-color2);
+  border-radius: 0 2px 2px 0;
+}
+
+.course-link {
+  color: var(--main-color2);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  padding: 6px 12px;
+  border-radius: 6px;
+  display: inline-block;
+  position: relative;
+}
+
+.course-link::after {
+  content: '';
+  position: absolute;
+  bottom: 4px;
+  left: 12px;
+  width: calc(100% - 24px);
+  height: 2px;
+  background: var(--main-color2);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+
+.course-link:hover {
+  color: var(--main-color2);
+  background-color: rgba(13, 92, 145, 0.05);
+}
+
+.course-link:hover::after {
+  transform: scaleX(1);
+}
+
+.semester-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 2rem auto 3rem;
+  gap: 24px;
+  max-width: 300px;
+  background: var(--main-color6);
+  padding: 16px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(13, 92, 145, 0.08);
+}
+
+.semester-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.semester-label {
+  font-size: 0.8rem;
+  color: var(--main-color7);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-weight: 500;
+}
+
+.semester-number {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--main-color2);
+  line-height: 1;
+}
+
+.semester-btn {
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--main-color6);
+  color: var(--main-color2);
+  border: 2px solid var(--main-color2);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1.2rem;
+}
+
+.semester-btn:hover:not(:disabled) {
+  background: var(--main-color2);
+  color: var(--main-color6);
+  transform: scale(1.05) translateX(0);
+  box-shadow: 0 4px 12px rgba(13, 92, 145, 0.2);
+}
+
+.semester-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  border-color: var(--main-color7);
+  color: var(--main-color7);
+}
+
+.arrow {
+  display: inline-block;
+  line-height: 1;
+  transform: translateY(-1px);
+}
+
+.loading-message {
+  text-align: center;
+  color: var(--main-color2);
+  font-size: 1.1rem;
+  margin: 2rem 0;
+  padding: 2rem;
+  background: rgba(90, 194, 241, 0.05);
+  border-radius: 12px;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.7; }
+  100% { opacity: 1; }
+}
+
+.error-message {
+  text-align: center;
+  color: var(--main-color4);
+  font-size: 1.1rem;
+  margin: 2rem 0;
+  padding: 1.5rem;
+  background: rgba(239, 62, 62, 0.05);
+  border-radius: 12px;
+  border: 1px solid rgba(239, 62, 62, 0.1);
+}
+
+.no-courses-message {
+  text-align: center;
+  color: var(--main-color7);
+  padding: 3rem 2rem;
+  font-size: 1.1rem;
+  background: rgba(90, 194, 241, 0.02);
+  border-radius: 12px;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .courses-table-wrapper {
+    padding: 1rem;
+  }
+  
+  .courses-table th,
+  .courses-table td {
+    padding: 14px 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .student-courses-container {
+    padding: 2rem 0.5rem;
+  }
+
+  .courses-table-wrapper {
+    padding: 0.75rem;
+    border-radius: 16px;
+  }
+  
+  .courses-table th,
+  .courses-table td {
+    font-size: 0.9rem;
+    padding: 12px 16px;
+  }
+  
+  .semester-controls {
+    gap: 16px;
+    padding: 12px;
+    margin: 1.5rem auto 2rem;
+  }
+  
+  .semester-number {
+    font-size: 1.3rem;
+  }
+  
+  .semester-btn {
+    width: 40px;
+    height: 40px;
+  }
+
+  .no-courses-message {
+    padding: 2rem 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .student-courses-container {
+    padding: 1.5rem 0.25rem;
+  }
+
+  .courses-table-wrapper {
+    padding: 0.5rem;
+    border-radius: 12px;
+  }
+  
+  .courses-table th,
+  .courses-table td {
+    font-size: 0.85rem;
+    padding: 10px 12px;
+  }
+  
+  .semester-controls {
+    gap: 12px;
+    padding: 10px;
+    margin: 1rem auto 1.5rem;
+  }
+  
+  .semester-number {
+    font-size: 1.2rem;
+  }
+  
+  .semester-btn {
+    width: 36px;
+    height: 36px;
+  }
+
+  .no-courses-message {
+    padding: 1.5rem 1rem;
+    font-size: 1rem;
+  }
+}
+
+/* Custom scrollbar for better UX */
+.courses-table-wrapper {
+  scrollbar-width: thin;
+  scrollbar-color: var(--main-color2) transparent;
+}
+
+.courses-table-wrapper::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.courses-table-wrapper::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.courses-table-wrapper::-webkit-scrollbar-thumb {
+  background-color: var(--main-color2);
+  border-radius: 3px;
+}
+
+/* Add subtle animation for loading state */
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
